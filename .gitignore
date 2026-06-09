@@ -1,0 +1,15 @@
+# Logs e Relatórios do Robot Framework
+output.xml
+log.html
+report.html
+
+# Prints e Evidências locais
+evidencias/
+
+# Pastas do VS Code e do Sistema
+.vscode/
+.idea/
+node_modules/
+__pycache__/
+.python-version
+venv/
