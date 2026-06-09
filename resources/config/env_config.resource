@@ -1,27 +1,31 @@
 *** Settings ***
-Documentation    Configuração dinâmica de URLs e ambientes
+Documentation        Gerenciamento dinâmico de ambientes e massas de dados (Fast2Mine).
+Library              Collections
 
 *** Variables ***
-# Configuração de Ambiente
-${ENV}                  dev
-${BASE_URL_DEV}         https://app-dev.fast2mine.com
-${BASE_URL_HML}         https://app-hml.fast2mine.com
-${BASE_URL_PROD}        https://app.fast2mine.com
+# Ambiente padrão executado caso não seja passado nenhum parâmetro via console
+${ENVIRONMENT}       QA1
 
-# URL Dinâmica baseada no ambiente
-${BASE_URL}             ${BASE_URL_${ENV.upper()}}
+# Dicionário de URLs mapeado conforme o documento da prova
+&{URLS}
+...                  QA1=https://gal.sistema.com
+...                  QA2=https://gal2.sistema.com
+...                  QA3=https://gal3.sistema.com
 
-# Configurações de Timeout
-${TIMEOUT_DEFAULT}      10s
-${TIMEOUT_LONG}         30s
-
-# Credenciais (substituir por variáveis de ambiente em produção)
-${USER_EMAIL}           usuario@teste.com
-${USER_PASSWORD}        senha123
+# Dicionário de Massas de Dados (Equipamentos válidos) para cada servidor
+&{EQUIPAMENTOS}
+...                  QA1=Caminhão 01
+...                  QA2=Caminhão_02
+...                  QA3=Caminhão_03
 
 *** Keywords ***
-Configurar Ambiente
-    [Arguments]    ${ambiente}=dev
-    Set Global Variable    ${ENV}    ${ambiente}
-    Set Global Variable    ${BASE_URL}    ${BASE_URL_${ambiente.upper()}}
-    Log    Ambiente configurado: ${ambiente} - URL: ${BASE_URL}
+Configurar Ambiente De Execucao
+    [Documentation]    Carrega de forma dinâmica a URL e a Massa de Dados baseada na variável global.
+    ${URL_ATUAL}       Get From Dictionary    ${URLS}            ${ENVIRONMENT}
+    ${MASSA_ATUAL}     Get From Dictionary    ${EQUIPAMENTOS}    ${ENVIRONMENT}
+    
+    # Define as variáveis como globais para que as Keywords Web/Mobile consigam acessá-las
+    Set Global Variable    ${BASE_URL}        ${URL_ATUAL}
+    Set Global Variable    ${EQUIPAMENTO}     ${MASSA_ATUAL}
+    
+    Log To Console     \n[INFO] Executando no Ambiente: ${ENVIRONMENT} | URL: ${BASE_URL} | Massa: ${EQUIPAMENTO}
