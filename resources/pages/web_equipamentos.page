@@ -1,64 +1,22 @@
 *** Settings ***
-Documentation    Page Object para a tela de Equipamentos (Web - Browser Library)
+Documentation        Mapeamento de elementos (Locators) da tela de Equipamentos (Web).
 
 *** Variables ***
-# Locators da Página de Equipamentos
-${LOC_BTN_NOVO_EQUIPAMENTO}        css=button[data-testid="btn-novo-equipamento"]
-${LOC_INPUT_NOME}                  css=input[name="nome"]
-${LOC_INPUT_TIPO}                  css=select[name="tipo"]
-${LOC_INPUT_STATUS}                css=select[name="status"]
-${LOC_INPUT_LOCALIZACAO}           css=input[name="localizacao"]
-${LOC_BTN_SALVAR}                  css=button[type="submit"]
-${LOC_BTN_CANCELAR}                css=button[data-testid="btn-cancelar"]
+# Seletores da Tela de Listagem e Busca
+${WEB_INPUT_BUSCA}          id=search-equipment
+${WEB_BTN_BUSCAR}           css=button.btn-search
+${WEB_BTN_LIMPAR}           id=clear-filter
+${WEB_TABELA_REGISTROS}     css=table.table-equipments
+${WEB_ALERTA_NAO_ENCONTRADO}    css=.alert-not-found
 
-# Locators da Listagem
-${LOC_TABELA_EQUIPAMENTOS}         css=table[data-testid="tabela-equipamentos"]
-${LOC_LINHA_EQUIPAMENTO}           xpath=//table//tr[contains(., '{nome}')]
-${LOC_BTN_EDITAR}                  xpath=//tr[contains(., '{nome}')]//button[@title="Editar"]
-${LOC_BTN_EXCLUIR}                 xpath=//tr[contains(., '{nome}')]//button[@title="Excluir"]
-${LOC_BTN_VISUALIZAR}              xpath=//tr[contains(., '{nome}')]//button[@title="Visualizar"]
+# Seletores da Linha do Equipamento na Tabela
+${WEB_TXT_NOME_EQUIP}       css=td.equipment-name
+${WEB_TXT_STATUS_EQUIP}     css=td.equipment-status
+${WEB_BTN_EDITAR}           css=button.btn-edit
 
-# Locators de Mensagens
-${LOC_MSG_SUCESSO}                 css=.toast-success, .alert-success
-${LOC_MSG_ERRO}                    css=.toast-error, .alert-error
-${LOC_MODAL_CONFIRMACAO}           css=.modal-confirmacao
-
-*** Keywords ***
-# Keywords de Interação com Elementos
-Clicar No Botão Novo Equipamento
-    Click    ${LOC_BTN_NOVO_EQUIPAMENTO}
-    Wait For Elements State    ${LOC_INPUT_NOME}    visible    timeout=${TIMEOUT_DEFAULT}
-
-Preencher Campo Nome
-    [Arguments]    ${nome}
-    Fill Text    ${LOC_INPUT_NOME}    ${nome}
-
-Preencher Campo Tipo
-    [Arguments]    ${tipo}
-    Select Options By    ${LOC_INPUT_TIPO}    text    ${tipo}
-
-Preencher Campo Status
-    [Arguments]    ${status}
-    Select Options By    ${LOC_INPUT_STATUS}    text    ${status}
-
-Preencher Campo Localização
-    [Arguments]    ${localizacao}
-    Fill Text    ${LOC_INPUT_LOCALIZACAO}    ${localizacao}
-
-Clicar No Botão Salvar
-    Click    ${LOC_BTN_SALVAR}
-
-Clicar No Botão Cancelar
-    Click    ${LOC_BTN_CANCELAR}
-
-# Keywords de Validação
-Equipamento Deve Estar Visível Na Listagem
-    [Arguments]    ${nome}
-    ${locator}=    Set Variable    ${LOC_LINHA_EQUIPAMENTO.replace('{nome}', '${nome}')}
-    Wait For Elements State    ${locator}    visible    timeout=${TIMEOUT_DEFAULT}
-
-Mensagem De Sucesso Deve Ser Exibida
-    Wait For Elements State    ${LOC_MSG_SUCESSO}    visible    timeout=${TIMEOUT_DEFAULT}
-
-Mensagem De Erro Deve Ser Exibida
-    Wait For Elements State    ${LOC_MSG_ERRO}    visible    timeout=${TIMEOUT_DEFAULT}
+# Seletores da Tela/Modal de Edição
+${WEB_INPUT_NOME_EDIT}      id=edit-equipment-name
+${WEB_SELECT_STATUS_EDIT}    id=edit-equipment-status
+${WEB_BTN_SALVAR}           id=save-equipment
+${WEB_MSG_VALIDACAO}        css=.invalid-feedback
+${WEB_MSG_SUCESSO}          css=.toast-success
