@@ -4,7 +4,7 @@ Resource             ../../resources/web_keywords.resource
 
 Test Setup           Iniciar Sessao Web
 Test Teardown        Run Keywords
-...                  Gerar Relatorio HTML    AND
+...                  Take Screenshot    filename=${TEST_NAME}    AND
 ...                  Encerrar Sessao Web
 
 Suite Teardown       Log To Console    \n✨ Execução finalizada! Veja: results/

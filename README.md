@@ -182,10 +182,10 @@ Todos os cenários web + cenários específicos de mobile (edição, validação
 - Comentários automáticos em PRs com resultados
 
 ### 2. Geração Automática de Relatórios
-- Relatório HTML padrão do Robot Framework
-- Relatório customizado com resumo visual
-- Screenshots automáticos em caso de falha
+- Relatório HTML padrão do Robot Framework com todas as evidências
+- Screenshots automáticos capturados em cada teste
 - Logs detalhados para debugging
+- Estrutura organizada por ambiente
 
 ### 3. Tratamentos Personalizados em Caso de Falha
 - Keyword Capturar Erro que:
@@ -210,14 +210,12 @@ results/
 ├── amazon/
 │   ├── report.html          # Relatório principal
 │   ├── log.html             # Log detalhado
-│   └── output.xml           # Dados estruturados
+│   ├── output.xml           # Dados estruturados
+│   └── browser/screenshot/  # Screenshots dos testes
 ├── mercadolivre/
 │   └── ...
-├── casasbahia/
-│   └── ...
-└── reports/
-    ├── relatorio_customizado.html  # Relatório visual customizado
-    └── erros.log                   # Log consolidado de erros
+└── casasbahia/
+    └── ...
 ```
 
 Abra o report.html no navegador para ver:
