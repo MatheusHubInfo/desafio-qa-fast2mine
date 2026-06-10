@@ -7,7 +7,7 @@ Projeto de automação de testes (Web e Mobile) para validação de funcionalida
 Este projeto demonstra automação de testes **funcionando de verdade** em sites reais:
 - 🛒 **Amazon Brasil**
 - 🛍️ **Mercado Livre**
-- 📱 **Samsung Brasil**
+- 🏠 **Casas Bahia**
 
 Os testes validam a funcionalidade de busca de produtos, garantindo que os resultados sejam exibidos corretamente. A arquitetura multiambiente permite executar os mesmos testes em diferentes sites sem alterar o código!
 
@@ -90,8 +90,8 @@ pip3 install robotframework robotframework-browser robotframework-appiumlibrary
 # Roda testes no Mercado Livre
 ./rodar_teste.sh MERCADOLIVRE
 
-# Roda testes na Samsung
-./rodar_teste.sh SAMSUNG
+# Roda testes na Casas Bahia
+./rodar_teste.sh CASASBAHIA
 ```
 
 ### Testes Web - Execução Individual
@@ -104,8 +104,8 @@ robot tests/web/
 # Mercado Livre
 robot -v ENVIRONMENT:MERCADOLIVRE tests/web/
 
-# Samsung
-robot -v ENVIRONMENT:SAMSUNG tests/web/
+# Casas Bahia
+robot -v ENVIRONMENT:CASASBAHIA tests/web/
 ```
 
 #### Filtrar por tags:
@@ -132,7 +132,7 @@ robot -i smoke tests/web/
 # Execute manualmente em 3 terminais diferentes:
 robot -v ENVIRONMENT:AMAZON tests/web/
 robot -v ENVIRONMENT:MERCADOLIVRE tests/web/
-robot -v ENVIRONMENT:SAMSUNG tests/web/
+robot -v ENVIRONMENT:CASASBAHIA tests/web/
 ```
 
 **Vantagens da execução paralela:**
@@ -213,7 +213,7 @@ results/
 │   └── output.xml           # Dados estruturados
 ├── mercadolivre/
 │   └── ...
-├── samsung/
+├── casasbahia/
 │   └── ...
 └── reports/
     ├── relatorio_customizado.html  # Relatório visual customizado
@@ -232,9 +232,9 @@ results/
 
 | Ambiente | URL | Produto Teste | Uso |
 |----------|-----|---------------|-----|
-| **AMAZON** | https://www.amazon.com.br | iPhone 15 | Testes de produtos eletrônicos |
-| **MERCADOLIVRE** | https://www.mercadolivre.com.br | Notebook Dell | Testes de marketplace |
-| **SAMSUNG** | https://www.samsung.com/br | Galaxy S24 | Testes de fabricante |
+| **AMAZON** | https://www.amazon.com.br | Apple iphone 16 plus rosa | Testes de produtos eletrônicos |
+| **MERCADOLIVRE** | https://www.mercadolivre.com.br | nitendo switch lite azul | Testes de marketplace |
+| **CASASBAHIA** | https://www.casasbahia.com.br | tv samsung 50 | Testes de varejo eletrônicos |
 
 ---
 

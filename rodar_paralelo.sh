@@ -27,14 +27,14 @@ echo "╚═══════════════════════�
 echo -e "${NC}"
 
 # Cria pasta para resultados se não existir
-mkdir -p results/{amazon,mercadolivre,samsung}
+mkdir -p results/{amazon,mercadolivre,casasbahia}
 
 echo -e "${AMARELO}⏱️  Iniciando execução...${NC}\n"
 
 # Roda os 3 ambientes em paralelo usando & (background)
 # O '&' no final de cada comando faz ele rodar em background (paralelo)
 echo -e "${VERDE}▶️  Iniciando testes: Amazon${NC}"
-robot --variable ENVIRONMENT:AMAZON \
+python3 -m robot --variable ENVIRONMENT:AMAZON \
       --outputdir results/amazon \
       --name "Testes Amazon" \
       --loglevel INFO \
@@ -42,20 +42,20 @@ robot --variable ENVIRONMENT:AMAZON \
 PID_AMAZON=$!  # Salva o Process ID para monitorar depois
 
 echo -e "${VERDE}▶️  Iniciando testes: Mercado Livre${NC}"
-robot --variable ENVIRONMENT:MERCADOLIVRE \
+python3 -m robot --variable ENVIRONMENT:MERCADOLIVRE \
       --outputdir results/mercadolivre \
       --name "Testes Mercado Livre" \
       --loglevel INFO \
       tests/web/ &
 PID_ML=$!
 
-echo -e "${VERDE}▶️  Iniciando testes: Samsung${NC}"
-robot --variable ENVIRONMENT:SAMSUNG \
-      --outputdir results/samsung \
-      --name "Testes Samsung" \
+echo -e "${VERDE}▶️  Iniciando testes: Casas Bahia${NC}"
+python3 -m robot --variable ENVIRONMENT:CASASBAHIA \
+      --outputdir results/casasbahia \
+      --name "Testes Casas Bahia" \
       --loglevel INFO \
       tests/web/ &
-PID_SAMSUNG=$!
+PID_CASASBAHIA=$!
 
 echo -e "\n${AMARELO}⏳ Aguardando conclusão dos testes...${NC}\n"
 
@@ -67,8 +67,8 @@ STATUS_AMAZON=$?
 wait $PID_ML
 STATUS_ML=$?
 
-wait $PID_SAMSUNG
-STATUS_SAMSUNG=$?
+wait $PID_CASASBAHIA
+STATUS_CASASBAHIA=$?
 
 # Exibe resumo dos resultados
 echo -e "\n${AZUL}╔════════════════════════════════════════════════════════════════════╗${NC}"
@@ -89,20 +89,20 @@ exibir_status() {
 
 exibir_status "Amazon        " $STATUS_AMAZON
 exibir_status "Mercado Livre " $STATUS_ML
-exibir_status "Samsung       " $STATUS_SAMSUNG
+exibir_status "Casas Bahia   " $STATUS_CASASBAHIA
 
 echo ""
 echo -e "${AZUL}📂 Relatórios salvos em:${NC}"
 echo -e "   📄 results/amazon/report.html"
 echo -e "   📄 results/mercadolivre/report.html"
-echo -e "   📄 results/samsung/report.html"
+echo -e "   📄 results/casasbahia/report.html"
 
 echo ""
 echo -e "${AMARELO}💡 Dica: Abra os arquivos report.html no navegador para ver os resultados detalhados!${NC}"
 echo ""
 
 # Retorna código de erro se algum teste falhou
-if [ $STATUS_AMAZON -ne 0 ] || [ $STATUS_ML -ne 0 ] || [ $STATUS_SAMSUNG -ne 0 ]; then
+if [ $STATUS_AMAZON -ne 0 ] || [ $STATUS_ML -ne 0 ] || [ $STATUS_CASASBAHIA -ne 0 ]; then
     echo -e "${VERMELHO}⚠️  Alguns testes falharam. Verifique os relatórios acima.${NC}\n"
     exit 1
 else

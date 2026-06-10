@@ -11,19 +11,19 @@ ${ENVIRONMENT}       MERCADOLIVRE
 &{URLS}
 ...                  AMAZON=https://www.amazon.com.br
 ...                  MERCADOLIVRE=https://www.mercadolivre.com.br
-...                  SAMSUNG=https://www.samsung.com/br
+...                  CASASBAHIA=https://www.casasbahia.com.br/
 
 # Massa de dados: produtos para pesquisar em cada ambiente
 &{PRODUTOS}
 ...                  AMAZON=Apple iphone 16 plus rosa
 ...                  MERCADOLIVRE=nitendo switch lite azul
-...                  SAMSUNG=Galaxy S24
+...                  CASASBAHIA=tv samsung 50
 
 # Produtos inexistentes para testes negativos
 &{PRODUTOS_INVALIDOS}
 ...                  AMAZON=xyzabc123produto999inexistente
 ...                  MERCADOLIVRE=xyzabc123produto999inexistente
-...                  SAMSUNG=xyzabc123produto999inexistente
+...                  CASASBAHIA=xyzabc123produto999inexistente
 
 *** Keywords ***
 Configurar Ambiente De Execucao

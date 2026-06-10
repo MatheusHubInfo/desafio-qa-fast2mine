@@ -23,15 +23,17 @@ Iniciar Sessao Web
     Create Directory    ${SCREENSHOTS_DIR}
     
     TRY
-        New Browser    browser=chromium    headless=True
+        New Browser    browser=chromium    headless=True    args=["--disable-blink-features=AutomationControlled"]
         New Context    
         ...    viewport={'width': 1920, 'height': 1080}
         ...    userAgent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
         ...    acceptDownloads=True
         ...    javaScriptEnabled=True
+        ...    bypassCSP=True
+        ...    extraHTTPHeaders={'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'}
         New Page       ${BASE_URL}
         Wait For Load State    domcontentloaded    timeout=30s
-        Sleep    2s
+        Sleep    3s
         
         # Tenta aceitar cookies se aparecer
         ${cookies_btn}=    Run Keyword And Return Status
@@ -39,6 +41,19 @@ Iniciar Sessao Web
         IF    ${cookies_btn}
             Click    text="Aceitar cookies"
             Sleep    1s
+        END
+        
+        # Tenta fechar modais/popups comuns
+        ${fechar_modal}=    Run Keyword And Return Status
+        ...    Click    css=button[aria-label*="Fechar"]    timeout=2s
+        IF    ${fechar_modal}
+            Sleep    0.5s
+        END
+        
+        ${fechar_x}=    Run Keyword And Return Status
+        ...    Click    css=.evg-modal-overlay    timeout=2s
+        IF    ${fechar_x}
+            Sleep    0.5s
         END
         
         Log    Navegador aberto    console=True
@@ -113,8 +128,16 @@ Clicar No Botao Buscar
             IF    ${btn2_visible}
                 Click    ${BTN_BUSCA_2}
             ELSE
-                # Fallback: Enter
-                Keyboard Key    press    Enter
+                # Tenta BTN_BUSCA_3 (Casas Bahia)
+                ${btn3_visible}=    Run Keyword And Return Status
+                ...    Wait For Elements State    ${BTN_BUSCA_3}    visible    timeout=2s
+                
+                IF    ${btn3_visible}
+                    Click    ${BTN_BUSCA_3}
+                ELSE
+                    # Fallback: Enter
+                    Keyboard Key    press    Enter
+                END
             END
         END
         
@@ -182,11 +205,22 @@ Validar Mensagem Produto Nao Encontrado
                 Should Contain    ${mensagem}    Não encontramos resultados
                 ...    msg=Mensagem esperada não encontrada: ${mensagem}
             ELSE
-                # Fallback: valida lista vazia
-                ${count}=    Get Element Count    ${TITULO_PRODUTO}
-                Should Be Equal As Numbers    ${count}    0
-                ...    msg=Esperava 0 resultados, encontrou ${count}
-                Log    Lista vazia    console=True
+                # Tenta Casas Bahia
+                ${msg_cb}=    Run Keyword And Return Status
+                ...    Get Text    ${MSG_NAO_ENCONTRADO_CB}
+                
+                IF    ${msg_cb}
+                    ${mensagem}=    Get Text    ${MSG_NAO_ENCONTRADO_CB}
+                    Log    Mensagem Casas Bahia: ${mensagem}    console=True
+                    Should Contain    ${mensagem}    Não encontramos resultados para a sua busca
+                    ...    msg=Mensagem esperada não encontrada: ${mensagem}
+                ELSE
+                    # Fallback: valida lista vazia
+                    ${count}=    Get Element Count    ${TITULO_PRODUTO}
+                    Should Be Equal As Numbers    ${count}    0
+                    ...    msg=Esperava 0 resultados, encontrou ${count}
+                    Log    Lista vazia    console=True
+                END
             END
         END
         

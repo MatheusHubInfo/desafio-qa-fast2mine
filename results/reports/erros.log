@@ -70,3 +70,12 @@ Produto: Apple iphone 16 plus rosa
 Mensagem: TimeoutError: page.waitForLoadState: Timeout 10000ms exceeded.
 ============================================
 
+============================================
+ERRO: Falha validação produto
+Timestamp: 20260610_140650
+Ambiente: MERCADOLIVRE
+URL: https://www.mercadolivre.com.br
+Produto: nitendo switch lite azul
+Mensagem: Produto "nitendo" não encontrado no título "Mercado Libre": 'Mercado Libre' does not contain 'nitendo'
+============================================
+
