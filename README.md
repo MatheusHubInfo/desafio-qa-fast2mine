@@ -75,7 +75,7 @@ pip3 install robotframework robotframework-browser robotframework-appiumlibrary
 
 ### 4. Inicialize o Playwright
 ```bash
-~/.local/bin/rfbrowser init
+rfbrowser init
 ```
 
 ---
