@@ -30,17 +30,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # Agora vai funcionar pois o requirements.txt existe
+          cache: 'pip'
       
-      - name: Instalar dependências
+      - name: Install Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          rfbrowser init # Inicializa o Playwright para os testes web
+          rfbrowser init
 
-      - name: Executar Testes (Amazon)
+      - name: Execute Amazon Tests
         run: robot -v ENVIRONMENT:AMAZON -d results/amazon tests/web/
-        continue-on-error: true
       
       - name: Upload dos resultados (Amazon)
         if: always()
@@ -63,17 +62,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # Agora vai funcionar pois o requirements.txt existe
+          cache: 'pip'
       
-      - name: Instalar dependências
+      - name: Install Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          rfbrowser init # Inicializa o Playwright para os testes web
+          rfbrowser init
 
-      - name: Executar Testes (Mercado Livre)
+      - name: Execute Mercado Livre Tests
         run: robot -v ENVIRONMENT:MERCADOLIVRE -d results/mercadolivre tests/web/
-        continue-on-error: true
       
       - name: Upload dos resultados (Mercado Livre)
         if: always()
@@ -96,8 +94,25 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # Agora vai funcionar pois o requirements.txt existe
-      
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          rfbrowser init
+
+      - name: Execute Casas Bahia Tests (Expected Failure - Headless Block)
+        run: robot -v ENVIRONMENT:CASASBAHIA -d results/casasbahia tests/web/
+        continue-on-error: true
+
+      - name: Upload dos resultados (Casas Bahia)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-casasbahia
+          path: results/casasbahia/
+          retention-days: 30
       - name: Instalar dependências
         run: |
           pip install --upgrade pip

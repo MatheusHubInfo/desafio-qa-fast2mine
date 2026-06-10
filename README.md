@@ -173,31 +173,15 @@ Todos os cenários web + cenários específicos de mobile (edição, validação
 
 ---
 
-## Diferenciais Implementados
+## CI/CD e Reports
 
-### 1. Integração com Pipeline CI/CD
-- GitHub Actions configurado em .github/workflows/testes-automatizados.yml
-- Executa automaticamente a cada push ou pull request
-- Testes de regressão agendados (segunda a sexta, 2h da manhã)
-- Comentários automáticos em PRs com resultados
+O projeto utiliza **GitHub Actions** para automação, configurado para rodar a cada push ou via agendamento (cron). 
 
-### 2. Geração Automática de Relatórios
-- Relatório HTML padrão do Robot Framework com todas as evidências
-- Screenshots automáticos capturados em cada teste
-- Logs detalhados para debugging
-- Estrutura organizada por ambiente
-
-### 3. Tratamentos Personalizados em Caso de Falha
-- Keyword Capturar Erro que:
-  - Tira screenshot automaticamente
-  - Salva log detalhado em arquivo
-  - Exibe mensagem amigável no console
-  - Registra contexto completo (ambiente, URL, timestamp)
-
-### 4. Execução Paralela
-- Script bash rodar_paralelo.sh para execução local
-- Pipeline CI/CD roda 3 jobs simultaneamente
-- Economia de 66% do tempo de execução
+**Destaques da implementação:**
+*   **Execução Paralela:** Os ambientes (Amazon, ML, Casas Bahia) rodam em containers separados simultaneamente, reduzindo o tempo total da pipeline.
+*   **Gestão de Evidências:** O framework está configurado para gerar screenshots apenas em casos estritos de falha (Teardown). Para execuções de sucesso, o log detalhado é a principal evidência.
+*   **Relatórios Consolidados:** Ao final da execução, os artefatos de todos os ambientes são armazenados no GitHub.
+*   **Tratamento de Erros (Anti-Bot):** O ambiente **Casas Bahia** apresenta falha controlada na pipeline. Isso ocorre devido às políticas rigorosas de segurança do site que bloqueiam automações em modo `headless` (CI), servindo como demonstração de logs de erro e tratamento de exceções do framework.
 
 ---
 
@@ -222,7 +206,7 @@ Abra o report.html no navegador para ver:
 - Taxa de sucesso/falha
 - Tempo de execução
 - Screenshots
-- Logs detalhados
+- Logs detalhados (Verificar `log.html` para rastreabilidade completa)
 
 ---
 
