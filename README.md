@@ -259,7 +259,6 @@ Abra o report.html no navegador para ver:
 
 - Código modular: Keywords separadas por contexto (Web/Mobile)
 - Arquitetura escalável: Fácil adicionar novos ambientes/sites
-- Comentários diretos: Sem poluição, só o essencial
 - Seletores inteligentes: Múltiplos fallbacks para confiabilidade
 - Waits dinâmicos: Esperas inteligentes para sincronização
 - Tratamento de erros: TRY/EXCEPT em pontos críticos
