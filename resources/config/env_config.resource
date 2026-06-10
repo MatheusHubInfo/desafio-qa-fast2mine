@@ -7,16 +7,15 @@ Library              Collections
 # Ambiente padrão caso o usuário não especifique (pode trocar rodando: robot -v ENVIRONMENT:AMAZON tests/web/)
 ${ENVIRONMENT}       MERCADOLIVRE
 
-# Mapeamento de URLs reais - agora os testes vão funcionar de verdade! 🎯
+# Mapeamento de URLs reais
 &{URLS}
 ...                  AMAZON=https://www.amazon.com.br
 ...                  MERCADOLIVRE=https://www.mercadolivre.com.br
 ...                  SAMSUNG=https://www.samsung.com/br
 
 # Massa de dados: produtos para pesquisar em cada ambiente
-# Escolhi produtos populares que provavelmente sempre terão resultados
 &{PRODUTOS}
-...                  AMAZON=iPhone 15
+...                  AMAZON=Apple iphone 16 plus rosa
 ...                  MERCADOLIVRE=Notebook Dell
 ...                  SAMSUNG=Galaxy S24
 

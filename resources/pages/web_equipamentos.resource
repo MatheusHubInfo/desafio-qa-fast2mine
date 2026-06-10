@@ -7,39 +7,39 @@ Documentation        Seletores dos elementos das páginas - mapeados para sites 
 # SELETORES PARA BUSCA (Funcionam nos 3 sites)
 # ============================================
 
-# Campo de busca - cada site usa IDs/names diferentes, testamos todos
-${CAMPO_BUSCA_1}               id=twotabsearchtextbox                    # Amazon
-${CAMPO_BUSCA_2}               name=as_word                              # Samsung
-${CAMPO_BUSCA_3}               name=q                                    # Mercado Livre
-${CAMPO_BUSCA_4}               css=input[type="search"]                  # Fallback genérico
-${CAMPO_BUSCA_5}               css=input[placeholder*="Busca"]           # Fallback por placeholder
+# Campo de busca - seletores CSS reais testados
+${CAMPO_BUSCA_1}               css=#twotabsearchtextbox
+${CAMPO_BUSCA_2}               css=input[name="as_word"]
+${CAMPO_BUSCA_3}               css=input[name="q"]
+${CAMPO_BUSCA_4}               css=input[type="search"]
+${CAMPO_BUSCA_5}               css=input[type="text"]
 
-# Botão de busca - vários sites usam ícones de lupa ou botões submit
-${BTN_BUSCA_1}                 css=input[type="submit"].nav-input        # Amazon
-${BTN_BUSCA_2}                 css=button[type="submit"]                 # Genérico
-${BTN_BUSCA_3}                 css=.nav-search-submit-button             # Amazon alternativo
-${BTN_BUSCA_4}                 css=button.nav-action-button              # Samsung
+# Botão de busca - seletores reais por site
+${BTN_BUSCA_1}                 css=#nav-search-submit-button
+${BTN_BUSCA_2}                 css=button[type="submit"]
+${BTN_BUSCA_3}                 css=.nav-search-submit-button
+${BTN_BUSCA_4}                 css=button.nav-action-button
 
 # ============================================
 # SELETORES PARA RESULTADOS
 # ============================================
 
-# Container com a lista de produtos encontrados
-${LISTA_PRODUTOS}              css=[data-component-type="s-search-result"]       # Amazon
-${LISTA_PRODUTOS_ML}           css=.ui-search-results                            # Mercado Livre  
-${LISTA_PRODUTOS_SAMSUNG}      css=.product-list                                 # Samsung
-${LISTA_PRODUTOS_GENERICO}     css=.s-result-list, .search-results, .results     # Fallback
+# Container com a lista de produtos
+${LISTA_PRODUTOS}              css=[data-component-type="s-search-result"]
+${LISTA_PRODUTOS_ML}           css=.ui-search-layout
+${LISTA_PRODUTOS_SAMSUNG}      css=.product-list
+${LISTA_PRODUTOS_GENERICO}     css=.s-result-list
 
-# Título/nome do primeiro produto encontrado
-${TITULO_PRODUTO}              css=h2 a span                                     # Amazon
-${TITULO_PRODUTO_ML}           css=.ui-search-item__title                        # Mercado Livre
-${TITULO_PRODUTO_SAMSUNG}      css=.product-card__name                           # Samsung
-${TITULO_PRODUTO_GENERICO}     css=h2, h3, .product-title, .item-title           # Fallback
+# Título do primeiro produto encontrado
+${TITULO_PRODUTO}              css=h2.s-line-clamp-2 span
+${TITULO_PRODUTO_ML}           css=.poly-box.poly-component__title a
+${TITULO_PRODUTO_SAMSUNG}      css=.product-card__name
+${TITULO_PRODUTO_GENERICO}     css=h2 span
 
-# Preço do produto (útil para validações extras)
-${PRECO_PRODUTO}               css=.a-price-whole                                # Amazon
-${PRECO_PRODUTO_ML}            css=.price-tag-amount                             # Mercado Livre
-${PRECO_PRODUTO_SAMSUNG}       css=.product-card__price                          # Samsung
+# Preço do produto
+${PRECO_PRODUTO}               css=.a-price-whole
+${PRECO_PRODUTO_ML}            css=.andes-money-amount__fraction
+${PRECO_PRODUTO_SAMSUNG}       css=.product-card__price
 
 # ============================================
 # SELETORES PARA CASOS DE "NÃO ENCONTRADO"

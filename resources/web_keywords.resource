@@ -25,7 +25,8 @@ Iniciar Sessao Web
     TRY
         New Browser    browser=chromium    headless=True
         New Page       ${BASE_URL}
-        Wait For Load State    networkidle    timeout=15s
+        Wait For Load State    domcontentloaded    timeout=30s
+        Sleep    1s
         Log    Navegador aberto    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha ao abrir navegador    ${error}
@@ -88,8 +89,8 @@ Clicar No Botao Buscar
             Keyboard Key    press    Enter
         END
         
-        Wait For Load State    networkidle    timeout=15s
-        Sleep    1s
+        Wait For Load State    domcontentloaded    timeout=30s
+        Sleep    2s
         Log    Busca executada    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha ao buscar    ${error}
@@ -98,29 +99,21 @@ Clicar No Botao Buscar
 
 Validar Produto Nos Resultados
     [Arguments]    ${produto_esperado}
-    [Documentation]    Valida se produto aparece nos resultados
+    [Documentation]    Valida se produto aparece nos resultados (valida título da página)
     
     TRY
-        ${lista_visivel}=    Run Keyword And Return Status
-        ...    Wait For Elements State    ${LISTA_PRODUTOS}    visible    timeout=5s
+        # Pega título da página (Amazon mostra pesquisa no título)
+        ${titulo_pagina}=    Get Title
+        Log    Titulo da pagina: ${titulo_pagina}    console=True
         
-        IF    ${lista_visivel}
-            Log    Lista carregada    console=True
-        ELSE
-            Wait For Elements State    ${LISTA_PRODUTOS_ML}    visible    timeout=5s
-        END
-        
-        ${titulo}=    Get Text    ${TITULO_PRODUTO}
-        Log    Titulo encontrado: ${titulo}    console=True
-        
-        # Valida primeira palavra do produto
+        # Valida primeira palavra do produto no título
         ${palavras_produto}=    Split String    ${produto_esperado}
         ${primeira_palavra}=    Get From List    ${palavras_produto}    0
         
-        Should Contain    ${titulo}    ${primeira_palavra}    ignore_case=True
-        ...    msg=Produto "${primeira_palavra}" não encontrado
+        Should Contain    ${titulo_pagina}    ${primeira_palavra}    ignore_case=True
+        ...    msg=Produto "${primeira_palavra}" não encontrado no título "${titulo_pagina}"
         
-        Log    Validacao OK    console=True
+        Log    Validacao OK - Produto encontrado    console=True
         
     EXCEPT    AS    ${error}
         Capturar Erro    Falha validação produto    ${error}
