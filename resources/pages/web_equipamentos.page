@@ -1,22 +1,69 @@
 *** Settings ***
-Documentation        Mapeamento de elementos (Locators) da tela de Equipamentos (Web).
+Documentation        Seletores dos elementos das páginas - mapeados para sites reais.
+...                  Cada site tem sua própria estrutura, então usamos seletores genéricos que funcionam na maioria dos casos.
 
 *** Variables ***
-# Seletores da Tela de Listagem e Busca
-${WEB_INPUT_BUSCA}          id=search-equipment
-${WEB_BTN_BUSCAR}           css=button.btn-search
-${WEB_BTN_LIMPAR}           id=clear-filter
-${WEB_TABELA_REGISTROS}     css=table.table-equipments
-${WEB_ALERTA_NAO_ENCONTRADO}    css=.alert-not-found
+# ============================================
+# SELETORES PARA BUSCA (Funcionam nos 3 sites)
+# ============================================
 
-# Seletores da Linha do Equipamento na Tabela
-${WEB_TXT_NOME_EQUIP}       css=td.equipment-name
-${WEB_TXT_STATUS_EQUIP}     css=td.equipment-status
-${WEB_BTN_EDITAR}           css=button.btn-edit
+# Campo de busca - cada site usa IDs/names diferentes, testamos todos
+${CAMPO_BUSCA_1}               id=twotabsearchtextbox                    # Amazon
+${CAMPO_BUSCA_2}               name=as_word                              # Samsung
+${CAMPO_BUSCA_3}               name=q                                    # Mercado Livre
+${CAMPO_BUSCA_4}               css=input[type="search"]                  # Fallback genérico
+${CAMPO_BUSCA_5}               css=input[placeholder*="Busca"]           # Fallback por placeholder
 
-# Seletores da Tela/Modal de Edição
-${WEB_INPUT_NOME_EDIT}      id=edit-equipment-name
-${WEB_SELECT_STATUS_EDIT}    id=edit-equipment-status
-${WEB_BTN_SALVAR}           id=save-equipment
-${WEB_MSG_VALIDACAO}        css=.invalid-feedback
+# Botão de busca - vários sites usam ícones de lupa ou botões submit
+${BTN_BUSCA_1}                 css=input[type="submit"].nav-input        # Amazon
+${BTN_BUSCA_2}                 css=button[type="submit"]                 # Genérico
+${BTN_BUSCA_3}                 css=.nav-search-submit-button             # Amazon alternativo
+${BTN_BUSCA_4}                 css=button.nav-action-button              # Samsung
+
+# ============================================
+# SELETORES PARA RESULTADOS
+# ============================================
+
+# Container com a lista de produtos encontrados
+${LISTA_PRODUTOS}              css=[data-component-type="s-search-result"]       # Amazon
+${LISTA_PRODUTOS_ML}           css=.ui-search-results                            # Mercado Livre  
+${LISTA_PRODUTOS_SAMSUNG}      css=.product-list                                 # Samsung
+${LISTA_PRODUTOS_GENERICO}     css=.s-result-list, .search-results, .results     # Fallback
+
+# Título/nome do primeiro produto encontrado
+${TITULO_PRODUTO}              css=h2 a span                                     # Amazon
+${TITULO_PRODUTO_ML}           css=.ui-search-item__title                        # Mercado Livre
+${TITULO_PRODUTO_SAMSUNG}      css=.product-card__name                           # Samsung
+${TITULO_PRODUTO_GENERICO}     css=h2, h3, .product-title, .item-title           # Fallback
+
+# Preço do produto (útil para validações extras)
+${PRECO_PRODUTO}               css=.a-price-whole                                # Amazon
+${PRECO_PRODUTO_ML}            css=.price-tag-amount                             # Mercado Livre
+${PRECO_PRODUTO_SAMSUNG}       css=.product-card__price                          # Samsung
+
+# ============================================
+# SELETORES PARA CASOS DE "NÃO ENCONTRADO"
+# ============================================
+
+# Mensagens quando a busca não retorna resultados
+${MSG_NAO_ENCONTRADO}          css=.s-no-results-search-message                  # Amazon
+${MSG_NAO_ENCONTRADO_ML}       css=.ui-search-rescue__title                      # Mercado Livre
+${MSG_NAO_ENCONTRADO_SAMSUNG}  css=.no-results-message                           # Samsung
+${MSG_NAO_ENCONTRADO_GENERICO} css=.no-results, [class*="no-result"], [class*="empty"]  # Fallback
+
+# ============================================
+# SELETORES PARA FILTROS E LIMPEZA
+# ============================================
+
+# Botão de limpar filtros/busca
+${BTN_LIMPAR_FILTROS}          css=.a-link-normal.s-navigation-clear-link        # Amazon
+${BTN_LIMPAR_FILTROS_ML}       css=.andes-button--clear                          # Mercado Livre
+${BTN_VOLTAR_HOME}             css=.nav-logo-link                                # Voltar para home (reset)
+
+# ============================================
+# SELETORES GERAIS DE NAVEGAÇÃO
+# ============================================
+
+${LOGO_SITE}                   css=.nav-logo-link, .logo, [aria-label*="logo"]   # Logo do site
+${MENU_PRINCIPAL}              css=nav, .nav-menu, header                        # Menu principal
 ${WEB_MSG_SUCESSO}          css=.toast-success

@@ -1,31 +1,41 @@
 *** Settings ***
-Documentation        Gerenciamento dinâmico de ambientes e massas de dados (Fast2Mine).
+Documentation        Sistema inteligente de gerenciamento de ambientes e massas de dados.
+...                  Permite trocar entre diferentes sites sem alterar o código dos testes.
 Library              Collections
 
 *** Variables ***
-# Ambiente padrão executado caso não seja passado nenhum parâmetro via console
-${ENVIRONMENT}       QA1
+# Ambiente padrão caso o usuário não especifique (pode trocar rodando: robot -v ENVIRONMENT:AMAZON tests/web/)
+${ENVIRONMENT}       MERCADOLIVRE
 
-# Dicionário de URLs mapeado conforme o documento da prova
+# Mapeamento de URLs reais - agora os testes vão funcionar de verdade! 🎯
 &{URLS}
-...                  QA1=https://gal.sistema.com
-...                  QA2=https://gal2.sistema.com
-...                  QA3=https://gal3.sistema.com
+...                  AMAZON=https://www.amazon.com.br
+...                  MERCADOLIVRE=https://www.mercadolivre.com.br
+...                  SAMSUNG=https://www.samsung.com/br
 
-# Dicionário de Massas de Dados (Equipamentos válidos) para cada servidor
-&{EQUIPAMENTOS}
-...                  QA1=Caminhão 01
-...                  QA2=Caminhão_02
-...                  QA3=Caminhão_03
+# Massa de dados: produtos para pesquisar em cada ambiente
+# Escolhi produtos populares que provavelmente sempre terão resultados
+&{PRODUTOS}
+...                  AMAZON=iPhone 15
+...                  MERCADOLIVRE=Notebook Dell
+...                  SAMSUNG=Galaxy S24
 
 *** Keywords ***
 Configurar Ambiente De Execucao
-    [Documentation]    Carrega de forma dinâmica a URL e a Massa de Dados baseada na variável global.
-    ${URL_ATUAL}       Get From Dictionary    ${URLS}            ${ENVIRONMENT}
-    ${MASSA_ATUAL}     Get From Dictionary    ${EQUIPAMENTOS}    ${ENVIRONMENT}
+    [Documentation]    Mágica acontece aqui! Carrega URL e produto baseado no ambiente escolhido.
+    ...                Isso permite rodar o mesmo teste em sites diferentes sem mudar nada no código.
     
-    # Define as variáveis como globais para que as Keywords Web/Mobile consigam acessá-las
-    Set Global Variable    ${BASE_URL}        ${URL_ATUAL}
-    Set Global Variable    ${EQUIPAMENTO}     ${MASSA_ATUAL}
+    # Busca as configurações do ambiente selecionado
+    ${URL_ATUAL}       Get From Dictionary    ${URLS}         ${ENVIRONMENT}
+    ${PRODUTO_ATUAL}   Get From Dictionary    ${PRODUTOS}     ${ENVIRONMENT}
     
-    Log To Console     \n[INFO] Executando no Ambiente: ${ENVIRONMENT} | URL: ${BASE_URL} | Massa: ${EQUIPAMENTO}
+    # Torna as variáveis acessíveis para todos os testes e keywords
+    Set Global Variable    ${BASE_URL}     ${URL_ATUAL}
+    Set Global Variable    ${PRODUTO}      ${PRODUTO_ATUAL}
+    
+    # Exibe info no console para o usuário saber onde está rodando
+    Log To Console     \n╔══════════════════════════════════════════════════════════╗
+    Log To Console     ║  🌍 Ambiente: ${ENVIRONMENT}
+    Log To Console     ║  🔗 URL: ${BASE_URL}
+    Log To Console     ║  📦 Produto: ${PRODUTO}
+    Log To Console     ╚══════════════════════════════════════════════════════════╝\n

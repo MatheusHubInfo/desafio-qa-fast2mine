@@ -1,6 +1,6 @@
 *** Settings ***
-Documentation        Cenarios de teste automatizados para gestao de equipamentos (Mobile).
-Resource             ../../resources/shared_keywords.resource
+Documentation        Testes Mobile - Gestão de equipamentos com Appium
+Resource             ../../resources/mobile_keywords.resource
 
 Test Setup           Iniciar Sessao Mobile
 Test Teardown        Encerrar Sessao Mobile

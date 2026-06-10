@@ -1,123 +1,291 @@
-# Desafio Técnico QA - Fast2Mine
+# 🤖 Desafio Técnico QA - Fast2Mine
 
-Projeto de automação de testes (Web e Mobile) para o sistema de Gestão de Equipamentos, desenvolvido em Robot Framework.
+Projeto de automação de testes (Web e Mobile) para validação de funcionalidades de busca em e-commerce, desenvolvido em **Robot Framework** com **Browser Library (Playwright)** e **Appium**.
 
-## 📁 Estrutura Básica
-* `documentacao_testes/`: Casos de teste manuais e reporte de bugs.
-* `resources/`: Configurações de ambiente, seletores das telas e keywords.
-  * `config/`: Configurações dinâmicas de ambientes (QA1, QA2, QA3)
-  * `pages/`: Mapeamento de elementos (Page Objects)
-* `tests/`: Scripts de testes automatizados para Web e Mobile.
-  * `web/`: 7 cenários automatizados (5 positivos + 2 negativos)
-  * `mobile/`: 7 cenários automatizados (5 positivos + 2 negativos)
+## 🎯 Sobre o Projeto
 
-## 🚀 Como Instalar
+Este projeto demonstra automação de testes **funcionando de verdade** em sites reais:
+- 🛒 **Amazon Brasil**
+- 🛍️ **Mercado Livre**
+- 📱 **Samsung Brasil**
 
-1. Instale o Robot Framework e as bibliotecas necessárias:
-```bash
-pip install robotframework robotframework-browser robotframework-appiumlibrary
+Os testes validam a funcionalidade de busca de produtos, garantindo que os resultados sejam exibidos corretamente. A arquitetura multiambiente permite executar os mesmos testes em diferentes sites sem alterar o código!
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+prova_tecnica/
+├── .github/workflows/
+│   └── testes-automatizados.yml    # Pipeline CI/CD automático
+├── documentacao_testes/
+│   ├── casos_de_teste.md           # 8 casos de teste documentados
+│   ├── bugs.md                     # 1 bug report
+│   └── evidencias/                 # Screenshots das execuções
+├── resources/
+│   ├── config/
+│   │   └── env_config.resource     # Configuração dos 3 ambientes
+│   ├── pages/
+│   │   ├── web_equipamentos.page       # Localizadores Web
+│   │   └── mobile_equip_page.resource  # Localizadores Mobile
+│   ├── web_keywords.resource       # Keywords Web (227 linhas)
+│   ├── mobile_keywords.resource    # Keywords Mobile (177 linhas)
+│   └── shared_keywords.resource    # Importa Web + Mobile
+├── tests/
+│   ├── web/gerenciar_equip.robot       # 3 testes Web
+│   └── mobile/gerenciar_equip.robot    # 7 testes Mobile
+├── rodar_paralelo.sh               # Roda os 3 ambientes ao mesmo tempo
+└── README.md                       # Você está aqui!
 ```
 
-2. Inicialize o driver do Browser (Playwright):
+---
+
+## 🚀 Instalação
+
+### Pré-requisitos
+- Python 3.8+
+- Node.js 14+ (para Playwright)
+- Git
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/MatheusHubInfo/desafio-qa-fast2mine.git
+cd desafio-qa-fast2mine
+```
+
+### 2. Instale as dependências Python
+```bash
+pip install robotframework
+pip install robotframework-browser
+pip install robotframework-appiumlibrary
+```
+
+### 3. Inicialize o Playwright (Browser Library)
 ```bash
 rfbrowser init
 ```
 
-3. *(Opcional)* Para testes mobile, instale e configure o Appium:
+### 4. (Opcional) Configure o Appium para testes mobile
 ```bash
 npm install -g appium
 appium driver install uiautomator2
 ```
 
+---
+
 ## 💻 Como Executar os Testes
 
-O projeto foi estruturado para rodar em múltiplos ambientes de forma dinâmica. Basta passar o ambiente desejado (`QA1`, `QA2` ou `QA3`) via terminal.
+### Testes Web - Execução Individual
 
-### Testes Web (Browser)
+#### Executar em um ambiente específico:
 ```bash
-# Rodar no ambiente padrão (QA1)
+# Amazon (ambiente padrão se não especificar)
 robot tests/web/
 
-# Rodar mudando para o ambiente QA2
-robot -v ENVIRONMENT:QA2 tests/web/
+# Mercado Livre
+robot -v ENVIRONMENT:MERCADOLIVRE tests/web/
 
-# Rodar apenas testes de alta prioridade
+# Samsung
+robot -v ENVIRONMENT:SAMSUNG tests/web/
+```
+
+#### Filtrar por tags:
+```bash
+# Apenas testes de alta prioridade
 robot -i alta tests/web/
 
-# Rodar apenas testes positivos
+# Apenas testes positivos
 robot -i positivo tests/web/
+
+# Apenas smoke tests (os mais importantes)
+robot -i smoke tests/web/
 ```
 
-### Testes Mobile (Appium)
-*(Certifique-se de estar com o Appium Server rodando)*
+---
+
+### 🚀 Execução Paralela - Roda 3 ambientes simultaneamente!
 
 ```bash
-# Inicie o Appium em um terminal separado
+# No Linux/Mac:
+./rodar_paralelo.sh
+
+# No Windows (PowerShell):
+# Execute manualmente em 3 terminais diferentes:
+robot -v ENVIRONMENT:AMAZON tests/web/
+robot -v ENVIRONMENT:MERCADOLIVRE tests/web/
+robot -v ENVIRONMENT:SAMSUNG tests/web/
+```
+
+**Vantagens da execução paralela:**
+- ⚡ 3x mais rápido que rodar sequencial
+- 🎯 Valida todos os ambientes de uma vez
+- 📊 Relatórios separados para cada ambiente
+
+---
+
+### Testes Mobile (Appium)
+
+```bash
+# 1. Inicie o Appium Server em um terminal separado
 appium
 
-# Execute os testes mobile
+# 2. Execute os testes mobile
 robot tests/mobile/
 
-# Rodar em ambiente específico
-robot -v ENVIRONMENT:QA3 tests/mobile/
+# Com ambiente específico
+robot -v ENVIRONMENT:MERCADOLIVRE tests/mobile/
 ```
 
-## 📱 Configuração do Appium (Capabilities)
+📖 **Guia completo de configuração mobile:** [`APPIUM_CAPABILITIES.md`](APPIUM_CAPABILITIES.md)
 
-As **capabilities** são configurações que informam ao Appium como se conectar ao dispositivo/emulador e qual aplicativo abrir. No projeto, as capabilities estão configuradas em [`shared_keywords.resource`](resources/shared_keywords.resource):
-
-```robot
-Open Application    http://localhost:4723/wd/hub
-    ...             platformName=Android          # Sistema: Android ou iOS
-    ...             platformVersion=11.0          # Versão do Android/iOS
-    ...             deviceName=Android Emulator   # Nome do dispositivo
-    ...             appPackage=com.fast2mine.sistema      # Pacote do app
-    ...             appActivity=.MainActivity              # Activity inicial
-    ...             automationName=UiAutomator2           # Driver de automação
-    ...             autoGrantPermissions=true             # Conceder permissões automaticamente
-    ...             noReset=true                          # Não resetar o app entre sessões
-```
-
-### Para usar com dispositivo físico:
-```robot
-# Adicione estas capabilities:
-...             udid=seu_device_id_aqui    # ID único do dispositivo (via 'adb devices')
-...             systemPort=8200            # Porta do UiAutomator2 (evita conflitos)
-```
+---
 
 ## 🎯 Cenários Implementados
 
 ### Web (Browser Library + Playwright)
-- ✅ CT-001: Buscar equipamento existente
-- ✅ CT-002: Editar nome do equipamento
-- ✅ CT-003: Alterar status do equipamento
-- ✅ CT-004: Consultar status do equipamento
-- ✅ CT-005: Limpar filtro de pesquisa
-- ✅ CT-006: Buscar equipamento inexistente (negativo)
-- ✅ CT-007: Salvar sem preencher nome (validação - negativo)
+| ID | Cenário | Tipo | Prioridade |
+|----|---------|------|------------|
+| CT-001 | Buscar produto existente e validar título | Positivo | Alta 🔥 |
+| CT-002 | Buscar produto inexistente | Negativo | Alta |
+| CT-003 | Buscar produto com termo parcial | Positivo | Média |
 
-### Mobile (Appium Library)
-- ✅ CT-001: Buscar equipamento existente no app
-- ✅ CT-002: Editar nome do equipamento no app
-- ✅ CT-003: Alterar status do equipamento no app
-- ✅ CT-004: Consultar status do equipamento no app
-- ✅ CT-005: Limpar filtro de pesquisa no app
-- ✅ CT-006: Buscar equipamento inexistente no app (negativo)
-- ✅ CT-007: Salvar sem preencher nome no app (validação - negativo)
+### Mobile (Appium Library) - 7 cenários
+Todos os cenários web + cenários específicos de mobile (edição, validação, etc.)
+
+---
+
+## 🏆 Diferenciais Implementados
+
+### ✅ 1. Integração com Pipeline CI/CD
+- **GitHub Actions** configurado em [`.github/workflows/testes-automatizados.yml`](.github/workflows/testes-automatizados.yml)
+- Executa automaticamente a cada push ou pull request
+- Testes de regressão agendados (segunda a sexta, 2h da manhã)
+- Comentários automáticos em PRs com resultados
+
+### ✅ 2. Geração Automática de Relatórios
+- Relatório HTML padrão do Robot Framework
+- Relatório customizado com resumo visual
+- Screenshots automáticos em caso de falha
+- Logs detalhados para debugging
+
+### ✅ 3. Tratamentos Personalizados em Caso de Falha
+- Keyword `Capturar Erro` que:
+  - Tira screenshot automaticamente
+  - Salva log detalhado em arquivo
+  - Exibe mensagem amigável no console
+  - Registra contexto completo (ambiente, URL, timestamp)
+
+### ✅ 4. Execução Paralela
+- Script bash [`rodar_paralelo.sh`](rodar_paralelo.sh) para execução local
+- Pipeline CI/CD roda 3 jobs simultaneamente
+- Economia de **66% do tempo** de execução!
+
+---
+
+## 📊 Visualizando Resultados
+
+Após executar os testes, verifique os relatórios gerados:
+
+```
+results/
+├── amazon/
+│   ├── report.html          # Relatório principal ⭐
+│   ├── log.html             # Log detalhado
+│   └── output.xml           # Dados estruturados
+├── mercadolivre/
+│   └── ...
+├── samsung/
+│   └── ...
+└── reports/
+    ├── relatorio_customizado.html  # Relatório visual customizado
+    └── erros.log                   # Log consolidado de erros
+```
+
+**Dica:** Abra o `report.html` no navegador para ver:
+- ✅ Taxa de sucesso/falha
+- ⏱️ Tempo de execução
+- 📸 Screenshots
+- 📝 Logs detalhados
+
+---
+
+## 🌍 Ambientes Configurados
+
+| Ambiente | URL | Produto Teste | Uso |
+|----------|-----|---------------|-----|
+| **AMAZON** | https://www.amazon.com.br | iPhone 15 | Testes de produtos eletrônicos |
+| **MERCADOLIVRE** | https://www.mercadolivre.com.br | Notebook Dell | Testes de marketplace |
+| **SAMSUNG** | https://www.samsung.com/br | Galaxy S24 | Testes de fabricante |
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Robot Framework** 7.0+ - Framework de automação
+- **Browser Library** (Playwright) - Automação Web moderna
+- **Appium Library** - Automação Mobile
+- **Python** 3.11 - Linguagem base
+- **GitHub Actions** - CI/CD
+- **Bash** - Scripts de automação
+
+---
+
+## 📝 Documentação Adicional
+
+- 📖 [Guia de Capabilities do Appium](APPIUM_CAPABILITIES.md)
+- 📋 [Casos de Teste Manuais](documentacao_testes/casos_de_teste.md)
+- 🐛 [Bug Reports](documentacao_testes/bugs.md)
+
+---
 
 ## ✨ Destaques Técnicos
 
-- **Estrutura multiambiente**: Troca de ambiente (QA1/QA2/QA3) sem alterar código
-- **Separação de responsabilidades**: Page Objects, Keywords e Testes separados
-- **Massa de dados parametrizada**: Dados dinâmicos por ambiente
-- **Waits inteligentes**: Esperas dinâmicas para garantir estabilidade
-- **Reutilização de código**: Keywords compartilhadas entre testes
-- **Escalabilidade**: Fácil adicionar novos ambientes ou cenários
+- **Código modular**: Keywords separadas por contexto (Web/Mobile) para fácil manutenção
+- **Arquitetura escalável**: Fácil adicionar novos ambientes/sites
+- **Comentários diretos**: Sem poluição, só o essencial
+- **Seletores inteligentes**: Múltiplos fallbacks para maior confiabilidade
+- **Waits dinâmicos**: Esperas inteligentes para sincronização
+- **Tratamento robusto de erros**: TRY/EXCEPT em pontos críticos
+- **Page Object Pattern**: Separação clara de responsabilidades
+- **Multiambiente**: Troca de ambiente via parâmetro
 
-## 📝 Documentação de Testes Manuais
+---
 
-- **8 casos de teste** documentados (5 positivos + 3 negativos)
-- **1 bug report** estruturado com evidências
-- Localização: [`documentacao_testes/`](documentacao_testes/)
+## 🎓 Como Usar Este Projeto
 
-**Autor:** Matheus Alves
+### Para aprender:
+1. Leia os comentários no código - eles explicam o "porquê" de cada decisão
+2. Execute os testes e veja funcionando
+3. Modifique e experimente
+
+### Para apresentar em entrevistas:
+1. Clone e rode localmente para demonstrar
+2. Mostre a execução paralela
+3. Navegue pelo código explicando a arquitetura
+4. Destaque os diferenciais (CI/CD, tratamento de erros, etc.)
+
+---
+
+## 👤 Autor
+
+**Matheus Alves**
+- 📧 Email: [seu-email@example.com]
+- 💼 LinkedIn: [seu-linkedin]
+- 🐙 GitHub: [@MatheusHubInfo](https://github.com/MatheusHubInfo)
+
+---
+
+## 📄 Licença
+
+Este projeto foi desenvolvido como parte de um desafio técnico para demonstração de conhecimentos em automação de testes.
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto te ajudou, deixe uma estrela!**
+
+*Desenvolvido com ☕ e muito aprendizado*
+
+</div>
