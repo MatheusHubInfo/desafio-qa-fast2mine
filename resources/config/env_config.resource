@@ -16,8 +16,14 @@ ${ENVIRONMENT}       MERCADOLIVRE
 # Massa de dados: produtos para pesquisar em cada ambiente
 &{PRODUTOS}
 ...                  AMAZON=Apple iphone 16 plus rosa
-...                  MERCADOLIVRE=Notebook Dell
+...                  MERCADOLIVRE=nitendo switch lite azul
 ...                  SAMSUNG=Galaxy S24
+
+# Produtos inexistentes para testes negativos
+&{PRODUTOS_INVALIDOS}
+...                  AMAZON=xyzabc123produto999inexistente
+...                  MERCADOLIVRE=xyzabc123produto999inexistente
+...                  SAMSUNG=xyzabc123produto999inexistente
 
 *** Keywords ***
 Configurar Ambiente De Execucao
@@ -26,10 +32,12 @@ Configurar Ambiente De Execucao
     # Busca as configurações do ambiente selecionado
     ${URL_ATUAL}       Get From Dictionary    ${URLS}         ${ENVIRONMENT}
     ${PRODUTO_ATUAL}   Get From Dictionary    ${PRODUTOS}     ${ENVIRONMENT}
+    ${PRODUTO_INVALIDO_ATUAL}   Get From Dictionary    ${PRODUTOS_INVALIDOS}    ${ENVIRONMENT}
     
     # Torna as variáveis acessíveis para todos os testes e keywords
     Set Global Variable    ${BASE_URL}     ${URL_ATUAL}
     Set Global Variable    ${PRODUTO}      ${PRODUTO_ATUAL}
+    Set Global Variable    ${PRODUTO_INVALIDO}    ${PRODUTO_INVALIDO_ATUAL}
     
     # Exibe info no console
     Log    Ambiente: ${ENVIRONMENT}    console=True

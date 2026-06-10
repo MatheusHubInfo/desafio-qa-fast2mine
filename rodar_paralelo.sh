@@ -4,6 +4,11 @@
 # ║     simultaneamente para economizar tempo!                          ║
 # ╚════════════════════════════════════════════════════════════════════╝
 
+# Carrega NVM e ativa Node.js 20 (compatível com Playwright)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use 20 > /dev/null 2>&1
+
 # Cores para output bonito no terminal
 VERDE='\033[0;32m'
 AMARELO='\033[1;33m'

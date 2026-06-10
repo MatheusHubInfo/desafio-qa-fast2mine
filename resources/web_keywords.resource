@@ -24,9 +24,23 @@ Iniciar Sessao Web
     
     TRY
         New Browser    browser=chromium    headless=True
+        New Context    
+        ...    viewport={'width': 1920, 'height': 1080}
+        ...    userAgent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+        ...    acceptDownloads=True
+        ...    javaScriptEnabled=True
         New Page       ${BASE_URL}
         Wait For Load State    domcontentloaded    timeout=30s
-        Sleep    1s
+        Sleep    2s
+        
+        # Tenta aceitar cookies se aparecer
+        ${cookies_btn}=    Run Keyword And Return Status
+        ...    Get Element    text="Aceitar cookies"
+        IF    ${cookies_btn}
+            Click    text="Aceitar cookies"
+            Sleep    1s
+        END
+        
         Log    Navegador aberto    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha ao abrir navegador    ${error}
@@ -56,11 +70,16 @@ Acessar Campo De Busca
         ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_1}
     EXCEPT
         TRY
-            Wait For Elements State    ${CAMPO_BUSCA_3}    visible    timeout=3s
-            ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_3}
+            Wait For Elements State    ${CAMPO_BUSCA_2}    visible    timeout=3s
+            ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_2}
         EXCEPT
-            Wait For Elements State    ${CAMPO_BUSCA_4}    visible    timeout=5s
-            ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_4}
+            TRY
+                Wait For Elements State    ${CAMPO_BUSCA_3}    visible    timeout=3s
+                ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_3}
+            EXCEPT
+                Wait For Elements State    ${CAMPO_BUSCA_4}    visible    timeout=5s
+                ${CAMPO_ENCONTRADO}=    Set Variable    ${CAMPO_BUSCA_4}
+            END
         END
     END
     
@@ -80,13 +99,23 @@ Digitar Termo De Busca
 Clicar No Botao Buscar
     [Documentation]    Clica botão de busca ou pressiona Enter
     TRY
-        ${btn_visible}=    Run Keyword And Return Status
+        # Tenta BTN_BUSCA_1 (Amazon)
+        ${btn1_visible}=    Run Keyword And Return Status
         ...    Wait For Elements State    ${BTN_BUSCA_1}    visible    timeout=2s
         
-        IF    ${btn_visible}
+        IF    ${btn1_visible}
             Click    ${BTN_BUSCA_1}
         ELSE
-            Keyboard Key    press    Enter
+            # Tenta BTN_BUSCA_2 (Mercado Livre)
+            ${btn2_visible}=    Run Keyword And Return Status
+            ...    Wait For Elements State    ${BTN_BUSCA_2}    visible    timeout=2s
+            
+            IF    ${btn2_visible}
+                Click    ${BTN_BUSCA_2}
+            ELSE
+                # Fallback: Enter
+                Keyboard Key    press    Enter
+            END
         END
         
         Wait For Load State    domcontentloaded    timeout=30s
@@ -99,19 +128,31 @@ Clicar No Botao Buscar
 
 Validar Produto Nos Resultados
     [Arguments]    ${produto_esperado}
-    [Documentation]    Valida se produto aparece nos resultados (valida título da página)
+    [Documentation]    Valida se produto aparece nos resultados (valida título ou URL)
     
     TRY
-        # Pega título da página (Amazon mostra pesquisa no título)
+        # Pega título e URL da página
         ${titulo_pagina}=    Get Title
-        Log    Titulo da pagina: ${titulo_pagina}    console=True
+        ${url_atual}=    Get Url
+        Log    Titulo: ${titulo_pagina}    console=True
+        Log    URL: ${url_atual}    console=True
         
-        # Valida primeira palavra do produto no título
+        # Valida primeira palavra do produto
         ${palavras_produto}=    Split String    ${produto_esperado}
         ${primeira_palavra}=    Get From List    ${palavras_produto}    0
         
-        Should Contain    ${titulo_pagina}    ${primeira_palavra}    ignore_case=True
-        ...    msg=Produto "${primeira_palavra}" não encontrado no título "${titulo_pagina}"
+        # Tenta validar pelo título (Amazon, Samsung)
+        ${titulo_contem}=    Run Keyword And Return Status
+        ...    Should Contain    ${titulo_pagina}    ${primeira_palavra}    ignore_case=True
+        
+        # Se não achou no título, valida pela URL (Mercado Livre)
+        IF    not ${titulo_contem}
+            Should Contain    ${url_atual}    ${primeira_palavra}    ignore_case=True
+            ...    msg=Produto "${primeira_palavra}" não encontrado no título "${titulo_pagina}" nem na URL "${url_atual}"
+            Log    Produto encontrado na URL    console=True
+        ELSE
+            Log    Produto encontrado no titulo    console=True
+        END
         
         Log    Validacao OK - Produto encontrado    console=True
         
@@ -123,17 +164,30 @@ Validar Produto Nos Resultados
 Validar Mensagem Produto Nao Encontrado
     [Documentation]    Valida mensagem quando não há resultados
     TRY
-        ${msg_encontrada}=    Run Keyword And Return Status
+        # Tenta Amazon
+        ${msg_amazon}=    Run Keyword And Return Status
         ...    Wait For Elements State    ${MSG_NAO_ENCONTRADO}    visible    timeout=5s
         
-        IF    ${msg_encontrada}
+        IF    ${msg_amazon}
             ${mensagem}=    Get Text    ${MSG_NAO_ENCONTRADO}
-            Log    Mensagem: ${mensagem}    console=True
+            Log    Mensagem Amazon: ${mensagem}    console=True
         ELSE
-            ${count}=    Get Element Count    ${TITULO_PRODUTO}
-            Should Be Equal As Numbers    ${count}    0
-            ...    msg=Esperava 0 resultados, encontrou ${count}
-            Log    Lista vazia    console=True
+            # Tenta Mercado Livre
+            ${msg_ml}=    Run Keyword And Return Status
+            ...    Get Text    ${MSG_NAO_ENCONTRADO_ML}
+            
+            IF    ${msg_ml}
+                ${mensagem}=    Get Text    ${MSG_NAO_ENCONTRADO_ML}
+                Log    Mensagem ML: ${mensagem}    console=True
+                Should Contain    ${mensagem}    Não encontramos resultados
+                ...    msg=Mensagem esperada não encontrada: ${mensagem}
+            ELSE
+                # Fallback: valida lista vazia
+                ${count}=    Get Element Count    ${TITULO_PRODUTO}
+                Should Be Equal As Numbers    ${count}    0
+                ...    msg=Esperava 0 resultados, encontrou ${count}
+                Log    Lista vazia    console=True
+            END
         END
         
         Log    Nenhum resultado - correto    console=True

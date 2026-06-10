@@ -24,7 +24,7 @@ CT-002 - Buscar produto inexistente
     [Tags]    negativo    alta
     
     Acessar Campo De Busca
-    Digitar Termo De Busca    xyzProdutoQueNaoExiste123456789
+    Digitar Termo De Busca    ${PRODUTO_INVALIDO}
     Clicar No Botao Buscar
     Validar Mensagem Produto Nao Encontrado
 

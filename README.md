@@ -44,8 +44,8 @@ prova_tecnica/
 ## 🚀 Instalação
 
 ### Pré-requisitos
-- Python 3.8+
-- Node.js 14+ (para Playwright)
+- Python 3.10+
+- **Node.js 20+** (obrigatório para Playwright)
 - Git
 
 ### 1. Clone o repositório
@@ -54,27 +54,45 @@ git clone https://github.com/MatheusHubInfo/desafio-qa-fast2mine.git
 cd desafio-qa-fast2mine
 ```
 
-### 2. Instale as dependências Python
+### 2. Instale Node.js 20 com NVM
 ```bash
-pip install robotframework
-pip install robotframework-browser
-pip install robotframework-appiumlibrary
+# Instala NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# Carrega NVM no terminal atual
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Instala Node.js 20
+nvm install 20
+nvm use 20
 ```
 
-### 3. Inicialize o Playwright (Browser Library)
+### 3. Instale as dependências Python
 ```bash
-rfbrowser init
+pip3 install robotframework robotframework-browser robotframework-appiumlibrary
 ```
 
-### 4. (Opcional) Configure o Appium para testes mobile
+### 4. Inicialize o Playwright
 ```bash
-npm install -g appium
-appium driver install uiautomator2
+~/.local/bin/rfbrowser init
 ```
 
 ---
 
 ## 💻 Como Executar os Testes
+
+### Execução Simples (Script automático)
+```bash
+# Roda testes na Amazon
+./rodar_teste.sh AMAZON
+
+# Roda testes no Mercado Livre
+./rodar_teste.sh MERCADOLIVRE
+
+# Roda testes na Samsung
+./rodar_teste.sh SAMSUNG
+```
 
 ### Testes Web - Execução Individual
 

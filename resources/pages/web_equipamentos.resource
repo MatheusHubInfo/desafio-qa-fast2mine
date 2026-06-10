@@ -9,14 +9,14 @@ Documentation        Seletores dos elementos das páginas - mapeados para sites 
 
 # Campo de busca - seletores CSS reais testados
 ${CAMPO_BUSCA_1}               css=#twotabsearchtextbox
-${CAMPO_BUSCA_2}               css=input[name="as_word"]
+${CAMPO_BUSCA_2}               css=#cb1-edit
 ${CAMPO_BUSCA_3}               css=input[name="q"]
 ${CAMPO_BUSCA_4}               css=input[type="search"]
 ${CAMPO_BUSCA_5}               css=input[type="text"]
 
 # Botão de busca - seletores reais por site
 ${BTN_BUSCA_1}                 css=#nav-search-submit-button
-${BTN_BUSCA_2}                 css=button[type="submit"]
+${BTN_BUSCA_2}                 css=body > header > div > div.nav-area.nav-top-area.nav-center-area > form > button
 ${BTN_BUSCA_3}                 css=.nav-search-submit-button
 ${BTN_BUSCA_4}                 css=button.nav-action-button
 
@@ -47,7 +47,7 @@ ${PRECO_PRODUTO_SAMSUNG}       css=.product-card__price
 
 # Mensagens quando a busca não retorna resultados
 ${MSG_NAO_ENCONTRADO}          css=.s-no-results-search-message
-${MSG_NAO_ENCONTRADO_ML}       css=.ui-search-rescue__title
+${MSG_NAO_ENCONTRADO_ML}       xpath=//h2[contains(text(), 'Não encontramos resultados')]
 ${MSG_NAO_ENCONTRADO_SAMSUNG}  css=.no-results-message
 ${MSG_NAO_ENCONTRADO_GENERICO}    css=.no-results
 
