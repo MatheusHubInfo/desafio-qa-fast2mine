@@ -32,13 +32,13 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
       
-      - name: Install Dependencies
+      - name: Setup Environment and Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
           rfbrowser init
 
-      - name: Execute Amazon Tests
+      - name: Run Amazon Tests
         run: robot -v ENVIRONMENT:AMAZON -d results/amazon tests/web/
       
       - name: Upload dos resultados (Amazon)
@@ -64,13 +64,13 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
       
-      - name: Install Dependencies
+      - name: Setup Environment and Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
           rfbrowser init
 
-      - name: Execute Mercado Livre Tests
+      - name: Run Mercado Livre Tests
         run: robot -v ENVIRONMENT:MERCADOLIVRE -d results/mercadolivre tests/web/
       
       - name: Upload dos resultados (Mercado Livre)
@@ -96,13 +96,13 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install Dependencies
+      - name: Setup Environment and Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
           rfbrowser init
 
-      - name: Execute Casas Bahia Tests (Expected Failure - Headless Block)
+      - name: Run Casas Bahia Tests (Headless expected failure)
         run: robot -v ENVIRONMENT:CASASBAHIA -d results/casasbahia tests/web/
         continue-on-error: true
 
@@ -138,3 +138,9 @@ jobs:
         with:
           name: resultados-mercadolivre
           path: consolidado/mercadolivre
+
+      - name: Download resultados Casas Bahia
+        uses: actions/download-artifact@v4
+        with:
+          name: resultados-casasbahia
+          path: consolidado/casasbahia
