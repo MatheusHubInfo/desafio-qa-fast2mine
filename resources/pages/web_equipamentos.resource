@@ -46,10 +46,10 @@ ${PRECO_PRODUTO_SAMSUNG}       css=.product-card__price                         
 # ============================================
 
 # Mensagens quando a busca não retorna resultados
-${MSG_NAO_ENCONTRADO}          css=.s-no-results-search-message                  # Amazon
-${MSG_NAO_ENCONTRADO_ML}       css=.ui-search-rescue__title                      # Mercado Livre
-${MSG_NAO_ENCONTRADO_SAMSUNG}  css=.no-results-message                           # Samsung
-${MSG_NAO_ENCONTRADO_GENERICO} css=.no-results, [class*="no-result"], [class*="empty"]  # Fallback
+${MSG_NAO_ENCONTRADO}          css=.s-no-results-search-message
+${MSG_NAO_ENCONTRADO_ML}       css=.ui-search-rescue__title
+${MSG_NAO_ENCONTRADO_SAMSUNG}  css=.no-results-message
+${MSG_NAO_ENCONTRADO_GENERICO}    css=.no-results
 
 # ============================================
 # SELETORES PARA FILTROS E LIMPEZA

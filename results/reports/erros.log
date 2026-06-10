@@ -1,0 +1,9 @@
+============================================
+ERRO: Falha ao abrir navegador
+Timestamp: 20260610_113811
+Ambiente: MERCADOLIVRE
+URL: https://www.mercadolivre.com.br
+Produto: Notebook Dell
+Mensagem: Could not connect to the playwright process at 127.0.0.1:38507.
+============================================
+

@@ -22,8 +22,7 @@ ${ENVIRONMENT}       MERCADOLIVRE
 
 *** Keywords ***
 Configurar Ambiente De Execucao
-    [Documentation]    Mágica acontece aqui! Carrega URL e produto baseado no ambiente escolhido.
-    ...                Isso permite rodar o mesmo teste em sites diferentes sem mudar nada no código.
+    [Documentation]    Carrega URL e produto baseado no ambiente escolhido
     
     # Busca as configurações do ambiente selecionado
     ${URL_ATUAL}       Get From Dictionary    ${URLS}         ${ENVIRONMENT}
@@ -33,9 +32,7 @@ Configurar Ambiente De Execucao
     Set Global Variable    ${BASE_URL}     ${URL_ATUAL}
     Set Global Variable    ${PRODUTO}      ${PRODUTO_ATUAL}
     
-    # Exibe info no console para o usuário saber onde está rodando
-    Log To Console     \n╔══════════════════════════════════════════════════════════╗
-    Log To Console     ║  🌍 Ambiente: ${ENVIRONMENT}
-    Log To Console     ║  🔗 URL: ${BASE_URL}
-    Log To Console     ║  📦 Produto: ${PRODUTO}
-    Log To Console     ╚══════════════════════════════════════════════════════════╝\n
+    # Exibe info no console
+    Log    Ambiente: ${ENVIRONMENT}    console=True
+    Log    URL: ${BASE_URL}    console=True
+    Log    Produto: ${PRODUTO}    console=True

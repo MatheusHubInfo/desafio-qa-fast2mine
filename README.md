@@ -29,8 +29,8 @@ prova_tecnica/
 │   ├── pages/
 │   │   ├── web_equipamentos.page       # Localizadores Web
 │   │   └── mobile_equip_page.resource  # Localizadores Mobile
-│   ├── web_keywords.resource       # Keywords Web (227 linhas)
-│   ├── mobile_keywords.resource    # Keywords Mobile (177 linhas)
+│   ├── web_keywords.resource       # Keywords Web 
+│   ├── mobile_keywords.resource    # Keywords Mobile 
 │   └── shared_keywords.resource    # Importa Web + Mobile
 ├── tests/
 │   ├── web/gerenciar_equip.robot       # 3 testes Web

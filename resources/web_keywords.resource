@@ -6,7 +6,7 @@ Library              OperatingSystem
 Library              DateTime
 Library              String
 Resource             config/env_config.resource
-Resource             pages/web_equipamentos.page
+Resource             pages/web_equipamentos.resource
 
 *** Variables ***
 ${SCREENSHOTS_DIR}        ${EXECDIR}/results/screenshots
@@ -23,13 +23,13 @@ Iniciar Sessao Web
     Create Directory    ${SCREENSHOTS_DIR}
     
     TRY
-        New Browser    browser=chromium    headless=False
+        New Browser    browser=chromium    headless=True
         New Page       ${BASE_URL}
         Wait For Load State    networkidle    timeout=15s
-        Log To Console    ✅ Navegador aberto
+        Log    Navegador aberto    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha ao abrir navegador    ${error}
-        Fail    ❌ Erro: ${error}
+        Fail    Erro ao abrir navegador: ${error}
     END
 
 Encerrar Sessao Web
@@ -37,9 +37,9 @@ Encerrar Sessao Web
     TRY
         ${timestamp}=    Get Current Date    result_format=%Y%m%d_%H%M%S
         Take Screenshot    ${SCREENSHOTS_DIR}/final_${timestamp}
-        Log To Console    📸 Screenshot salvo
+        Log    Screenshot salvo    console=True
     EXCEPT
-        Log To Console    ⚠️ Erro ao capturar screenshot
+        Log    Erro ao capturar screenshot    console=True
     END
     Close Browser
 
@@ -64,8 +64,8 @@ Acessar Campo De Busca
     END
     
     Set Suite Variable    ${CAMPO_BUSCA_ATIVO}    ${CAMPO_ENCONTRADO}
-    Log To Console    🔍 Campo localizado
-    [Return]    ${CAMPO_ENCONTRADO}
+    Log    Campo de busca localizado    console=True
+    RETURN    ${CAMPO_ENCONTRADO}
 
 Digitar Termo De Busca
     [Arguments]    ${termo}
@@ -74,7 +74,7 @@ Digitar Termo De Busca
     Fill Text    ${CAMPO_BUSCA_ATIVO}    ${EMPTY}
     Type Text    ${CAMPO_BUSCA_ATIVO}    ${termo}    delay=50ms
     Sleep    0.3s
-    Log To Console    ⌨️ "${termo}"
+    Log    Digitado: ${termo}    console=True
 
 Clicar No Botao Buscar
     [Documentation]    Clica botão de busca ou pressiona Enter
@@ -90,10 +90,10 @@ Clicar No Botao Buscar
         
         Wait For Load State    networkidle    timeout=15s
         Sleep    1s
-        Log To Console    🎯 Busca executada
+        Log    Busca executada    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha ao buscar    ${error}
-        Fail    ❌ Erro na busca: ${error}
+        Fail    Erro na busca: ${error}
     END
 
 Validar Produto Nos Resultados
@@ -105,13 +105,13 @@ Validar Produto Nos Resultados
         ...    Wait For Elements State    ${LISTA_PRODUTOS}    visible    timeout=5s
         
         IF    ${lista_visivel}
-            Log To Console    📦 Lista carregada
+            Log    Lista carregada    console=True
         ELSE
             Wait For Elements State    ${LISTA_PRODUTOS_ML}    visible    timeout=5s
         END
         
         ${titulo}=    Get Text    ${TITULO_PRODUTO}
-        Log To Console    📝 ${titulo}
+        Log    Titulo encontrado: ${titulo}    console=True
         
         # Valida primeira palavra do produto
         ${palavras_produto}=    Split String    ${produto_esperado}
@@ -120,11 +120,11 @@ Validar Produto Nos Resultados
         Should Contain    ${titulo}    ${primeira_palavra}    ignore_case=True
         ...    msg=Produto "${primeira_palavra}" não encontrado
         
-        Log To Console    ✅ Validação OK
+        Log    Validacao OK    console=True
         
     EXCEPT    AS    ${error}
         Capturar Erro    Falha validação produto    ${error}
-        Fail    ❌ Produto não encontrado: ${error}
+        Fail    Produto não encontrado: ${error}
     END
 
 Validar Mensagem Produto Nao Encontrado
@@ -135,18 +135,18 @@ Validar Mensagem Produto Nao Encontrado
         
         IF    ${msg_encontrada}
             ${mensagem}=    Get Text    ${MSG_NAO_ENCONTRADO}
-            Log To Console    💬 ${mensagem}
+            Log    Mensagem: ${mensagem}    console=True
         ELSE
             ${count}=    Get Element Count    ${TITULO_PRODUTO}
             Should Be Equal As Numbers    ${count}    0
             ...    msg=Esperava 0 resultados, encontrou ${count}
-            Log To Console    📭 Lista vazia
+            Log    Lista vazia    console=True
         END
         
-        Log To Console    ✅ Nenhum resultado (correto)
+        Log    Nenhum resultado - correto    console=True
     EXCEPT    AS    ${error}
         Capturar Erro    Falha validar "não encontrado"    ${error}
-        Fail    ❌ Erro: ${error}
+        Fail    Erro: ${error}
     END
 
 # ═══════════════════════════════════════════════════════════════
@@ -162,14 +162,14 @@ Capturar Erro
     
     TRY
         Take Screenshot    ${SCREENSHOTS_DIR}/${nome_arquivo}.png
-        Log To Console    📸 Screenshot: ${nome_arquivo}.png
+        Log    Screenshot: ${nome_arquivo}.png    console=True
     EXCEPT
-        Log To Console    ⚠️ Erro ao capturar screenshot
+        Log    Erro ao capturar screenshot    console=True
     END
     
     ${log_completo}=    Catenate    SEPARATOR=\n
     ...    ============================================
-    ...    🚨 ERRO: ${contexto}
+    ...    ERRO: ${contexto}
     ...    Timestamp: ${timestamp}
     ...    Ambiente: ${ENVIRONMENT}
     ...    URL: ${BASE_URL}
@@ -180,9 +180,9 @@ Capturar Erro
     TRY
         Create Directory    ${REPORTS_DIR}
         Append To File    ${REPORTS_DIR}/erros.log    ${log_completo}\n\n
-        Log To Console    📝 Log salvo
+        Log    Log de erro salvo    console=True
     EXCEPT
-        Log To Console    ⚠️ Erro ao salvar log
+        Log    Erro ao salvar log    console=True
     END
 
 Gerar Relatorio HTML
@@ -206,12 +206,12 @@ Gerar Relatorio HTML
     ...    </head>
     ...    <body>
     ...        <div class="container">
-    ...            <h1>🎯 Relatório de Testes</h1>
+    ...            <h1>Relatório de Testes</h1>
     ...            <div class="info">
-    ...                <div class="card"><h3>🌍 Ambiente</h3><p>${ENVIRONMENT}</p></div>
-    ...                <div class="card"><h3>🔗 URL</h3><p>${BASE_URL}</p></div>
-    ...                <div class="card"><h3>📦 Produto</h3><p>${PRODUTO}</p></div>
-    ...                <div class="card"><h3>⏰ Data/Hora</h3><p>${timestamp}</p></div>
+    ...                <div class="card"><h3>Ambiente</h3><p>${ENVIRONMENT}</p></div>
+    ...                <div class="card"><h3>URL</h3><p>${BASE_URL}</p></div>
+    ...                <div class="card"><h3>Produto</h3><p>${PRODUTO}</p></div>
+    ...                <div class="card"><h3>Data/Hora</h3><p>${timestamp}</p></div>
     ...            </div>
     ...            <p style="text-align: center; margin-top: 30px; color: #666;">Matheus Alves</p>
     ...        </div>
@@ -221,7 +221,7 @@ Gerar Relatorio HTML
     TRY
         Create Directory    ${REPORTS_DIR}
         Create File    ${REPORTS_DIR}/relatorio_customizado.html    ${html_content}
-        Log To Console    📄 Relatório gerado: ${REPORTS_DIR}/relatorio_customizado.html
+        Log    Relatorio HTML gerado    console=True
     EXCEPT    AS    ${error}
-        Log To Console    ⚠️ Erro ao gerar relatório: ${error}
+        Log    Erro ao gerar relatorio: ${error}    console=True
     END
