@@ -1,4 +1,4 @@
-# 📱 Guia de Capabilities do Appium
+# Guia de Capabilities do Appium
 
 ## O que são Capabilities?
 

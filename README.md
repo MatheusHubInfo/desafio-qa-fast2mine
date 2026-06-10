@@ -1,19 +1,19 @@
-# 🤖 Desafio Técnico QA - Fast2Mine
+# Desafio Técnico QA - Fast2Mine
 
-Projeto de automação de testes (Web e Mobile) para validação de funcionalidades de busca em e-commerce, desenvolvido em **Robot Framework** com **Browser Library (Playwright)** e **Appium**.
+Projeto de automação de testes (Web e Mobile) desenvolvido em Robot Framework com Browser Library (Playwright) e Appium.
 
-## 🎯 Sobre o Projeto
+## Sobre o Projeto
 
-Este projeto demonstra automação de testes **funcionando de verdade** em sites reais:
-- 🛒 **Amazon Brasil**
-- 🛍️ **Mercado Livre**
-- 🏠 **Casas Bahia**
+Implementação de testes automatizados em sites reais de e-commerce:
+- Amazon Brasil
+- Mercado Livre
+- Casas Bahia
 
-Os testes validam a funcionalidade de busca de produtos, garantindo que os resultados sejam exibidos corretamente. A arquitetura multiambiente permite executar os mesmos testes em diferentes sites sem alterar o código!
+Os testes validam funcionalidades de busca de produtos. A arquitetura multiambiente permite rodar os mesmos testes em sites diferentes apenas mudando uma variável.
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 prova_tecnica/
@@ -41,11 +41,11 @@ prova_tecnica/
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
 ### Pré-requisitos
 - Python 3.10+
-- **Node.js 20+** (obrigatório para Playwright)
+- Node.js 20+ (obrigatório para Playwright)
 - Git
 
 ### 1. Clone o repositório
@@ -80,7 +80,7 @@ pip3 install robotframework robotframework-browser robotframework-appiumlibrary
 
 ---
 
-## 💻 Como Executar os Testes
+## Como Executar os Testes
 
 ### Execução Simples (Script automático)
 ```bash
@@ -122,7 +122,7 @@ robot -i smoke tests/web/
 
 ---
 
-### 🚀 Execução Paralela - Roda 3 ambientes simultaneamente!
+### Execução Paralela - Roda 3 ambientes ao mesmo tempo
 
 ```bash
 # No Linux/Mac:
@@ -135,10 +135,10 @@ robot -v ENVIRONMENT:MERCADOLIVRE tests/web/
 robot -v ENVIRONMENT:CASASBAHIA tests/web/
 ```
 
-**Vantagens da execução paralela:**
-- ⚡ 3x mais rápido que rodar sequencial
-- 🎯 Valida todos os ambientes de uma vez
-- 📊 Relatórios separados para cada ambiente
+Vantagens da execução paralela:
+- 3x mais rápido que rodar sequencial
+- Valida todos os ambientes de uma vez
+- Relatórios separados para cada ambiente
 
 ---
 
@@ -155,16 +155,16 @@ robot tests/mobile/
 robot -v ENVIRONMENT:MERCADOLIVRE tests/mobile/
 ```
 
-📖 **Guia completo de configuração mobile:** [`APPIUM_CAPABILITIES.md`](APPIUM_CAPABILITIES.md)
+Guia completo de configuração mobile: APPIUM_CAPABILITIES.md
 
 ---
 
-## 🎯 Cenários Implementados
+## Cenários Implementados
 
 ### Web (Browser Library + Playwright)
 | ID | Cenário | Tipo | Prioridade |
 |----|---------|------|------------|
-| CT-001 | Buscar produto existente e validar título | Positivo | Alta 🔥 |
+| CT-001 | Buscar produto existente e validar título | Positivo | Alta |
 | CT-002 | Buscar produto inexistente | Negativo | Alta |
 | CT-003 | Buscar produto com termo parcial | Positivo | Média |
 
@@ -173,42 +173,42 @@ Todos os cenários web + cenários específicos de mobile (edição, validação
 
 ---
 
-## 🏆 Diferenciais Implementados
+## Diferenciais Implementados
 
-### ✅ 1. Integração com Pipeline CI/CD
-- **GitHub Actions** configurado em [`.github/workflows/testes-automatizados.yml`](.github/workflows/testes-automatizados.yml)
+### 1. Integração com Pipeline CI/CD
+- GitHub Actions configurado em .github/workflows/testes-automatizados.yml
 - Executa automaticamente a cada push ou pull request
 - Testes de regressão agendados (segunda a sexta, 2h da manhã)
 - Comentários automáticos em PRs com resultados
 
-### ✅ 2. Geração Automática de Relatórios
+### 2. Geração Automática de Relatórios
 - Relatório HTML padrão do Robot Framework
 - Relatório customizado com resumo visual
 - Screenshots automáticos em caso de falha
 - Logs detalhados para debugging
 
-### ✅ 3. Tratamentos Personalizados em Caso de Falha
-- Keyword `Capturar Erro` que:
+### 3. Tratamentos Personalizados em Caso de Falha
+- Keyword Capturar Erro que:
   - Tira screenshot automaticamente
   - Salva log detalhado em arquivo
   - Exibe mensagem amigável no console
   - Registra contexto completo (ambiente, URL, timestamp)
 
-### ✅ 4. Execução Paralela
-- Script bash [`rodar_paralelo.sh`](rodar_paralelo.sh) para execução local
+### 4. Execução Paralela
+- Script bash rodar_paralelo.sh para execução local
 - Pipeline CI/CD roda 3 jobs simultaneamente
-- Economia de **66% do tempo** de execução!
+- Economia de 66% do tempo de execução
 
 ---
 
-## 📊 Visualizando Resultados
+## Visualizando Resultados
 
 Após executar os testes, verifique os relatórios gerados:
 
 ```
 results/
 ├── amazon/
-│   ├── report.html          # Relatório principal ⭐
+│   ├── report.html          # Relatório principal
 │   ├── log.html             # Log detalhado
 │   └── output.xml           # Dados estruturados
 ├── mercadolivre/
@@ -220,15 +220,15 @@ results/
     └── erros.log                   # Log consolidado de erros
 ```
 
-**Dica:** Abra o `report.html` no navegador para ver:
-- ✅ Taxa de sucesso/falha
-- ⏱️ Tempo de execução
-- 📸 Screenshots
-- 📝 Logs detalhados
+Abra o report.html no navegador para ver:
+- Taxa de sucesso/falha
+- Tempo de execução
+- Screenshots
+- Logs detalhados
 
 ---
 
-## 🌍 Ambientes Configurados
+## Ambientes Configurados
 
 | Ambiente | URL | Produto Teste | Uso |
 |----------|-----|---------------|-----|
@@ -238,72 +238,45 @@ results/
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-- **Robot Framework** 7.0+ - Framework de automação
-- **Browser Library** (Playwright) - Automação Web moderna
-- **Appium Library** - Automação Mobile
-- **Python** 3.11 - Linguagem base
-- **GitHub Actions** - CI/CD
-- **Bash** - Scripts de automação
-
----
-
-## 📝 Documentação Adicional
-
-- 📖 [Guia de Capabilities do Appium](APPIUM_CAPABILITIES.md)
-- 📋 [Casos de Teste Manuais](documentacao_testes/casos_de_teste.md)
-- 🐛 [Bug Reports](documentacao_testes/bugs.md)
+- Robot Framework 7.0+ - Framework de automação
+- Browser Library (Playwright) - Automação Web
+- Appium Library - Automação Mobile
+- Python 3.11 - Linguagem base
+- GitHub Actions - CI/CD
+- Bash - Scripts de automação
 
 ---
 
-## ✨ Destaques Técnicos
+## Documentação Adicional
 
-- **Código modular**: Keywords separadas por contexto (Web/Mobile) para fácil manutenção
-- **Arquitetura escalável**: Fácil adicionar novos ambientes/sites
-- **Comentários diretos**: Sem poluição, só o essencial
-- **Seletores inteligentes**: Múltiplos fallbacks para maior confiabilidade
-- **Waits dinâmicos**: Esperas inteligentes para sincronização
-- **Tratamento robusto de erros**: TRY/EXCEPT em pontos críticos
-- **Page Object Pattern**: Separação clara de responsabilidades
-- **Multiambiente**: Troca de ambiente via parâmetro
+- Guia de Capabilities do Appium: APPIUM_CAPABILITIES.md
+- Casos de Teste Manuais: documentacao_testes/casos_de_teste.md
+- Bug Reports: documentacao_testes/bugs.md
 
 ---
 
-## 🎓 Como Usar Este Projeto
+## Destaques Técnicos
 
-### Para aprender:
-1. Leia os comentários no código - eles explicam o "porquê" de cada decisão
-2. Execute os testes e veja funcionando
-3. Modifique e experimente
-
-### Para apresentar em entrevistas:
-1. Clone e rode localmente para demonstrar
-2. Mostre a execução paralela
-3. Navegue pelo código explicando a arquitetura
-4. Destaque os diferenciais (CI/CD, tratamento de erros, etc.)
+- Código modular: Keywords separadas por contexto (Web/Mobile)
+- Arquitetura escalável: Fácil adicionar novos ambientes/sites
+- Comentários diretos: Sem poluição, só o essencial
+- Seletores inteligentes: Múltiplos fallbacks para confiabilidade
+- Waits dinâmicos: Esperas inteligentes para sincronização
+- Tratamento de erros: TRY/EXCEPT em pontos críticos
+- Page Object Pattern: Separação clara de responsabilidades
+- Multiambiente: Troca de ambiente via parâmetro
 
 ---
 
-## 👤 Autor
+## Autor
 
-**Matheus Alves**
-- 📧 Email: [seu-email@example.com]
-- 💼 LinkedIn: [seu-linkedin]
-- 🐙 GitHub: [@MatheusHubInfo](https://github.com/MatheusHubInfo)
+Matheus Alves
+- GitHub: @MatheusHubInfo
 
 ---
 
-## 📄 Licença
+## Licença
 
-Este projeto foi desenvolvido como parte de um desafio técnico para demonstração de conhecimentos em automação de testes.
-
----
-
-<div align="center">
-
-**⭐ Se este projeto te ajudou, deixe uma estrela!**
-
-*Desenvolvido com ☕ e muito aprendizado*
-
-</div>
+Projeto desenvolvido como parte de um desafio técnico para demonstração de conhecimentos em automação de testes.

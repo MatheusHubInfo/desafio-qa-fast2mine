@@ -13,9 +13,9 @@ ${SCREENSHOTS_DIR}        ${EXECDIR}/results/screenshots
 ${REPORTS_DIR}            ${EXECDIR}/results/reports
 
 *** Keywords ***
-# ═══════════════════════════════════════════════════════════════
+#---
 #  SETUP & TEARDOWN
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Iniciar Sessao Web
     [Documentation]    Abre navegador e carrega URL do ambiente selecionado
@@ -73,9 +73,9 @@ Encerrar Sessao Web
     END
     Close Browser
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  BUSCA DE PRODUTOS
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Acessar Campo De Busca
     [Documentation]    Localiza campo de busca (multi-seletor para diferentes sites)
@@ -230,9 +230,9 @@ Validar Mensagem Produto Nao Encontrado
         Fail    Erro: ${error}
     END
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  UTILITÁRIOS
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Capturar Erro
     [Arguments]    ${contexto}    ${mensagem_erro}

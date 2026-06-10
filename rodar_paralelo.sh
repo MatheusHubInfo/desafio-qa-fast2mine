@@ -29,11 +29,11 @@ echo -e "${NC}"
 # Cria pasta para resultados se não existir
 mkdir -p results/{amazon,mercadolivre,casasbahia}
 
-echo -e "${AMARELO}⏱️  Iniciando execução...${NC}\n"
+echo -e "${AMARELO}Iniciando execução...${NC}\n"
 
 # Roda os 3 ambientes em paralelo usando & (background)
 # O '&' no final de cada comando faz ele rodar em background (paralelo)
-echo -e "${VERDE}▶️  Iniciando testes: Amazon${NC}"
+echo -e "${VERDE}Iniciando testes: Amazon${NC}"
 python3 -m robot --variable ENVIRONMENT:AMAZON \
       --outputdir results/amazon \
       --name "Testes Amazon" \
@@ -41,7 +41,7 @@ python3 -m robot --variable ENVIRONMENT:AMAZON \
       tests/web/ &
 PID_AMAZON=$!  # Salva o Process ID para monitorar depois
 
-echo -e "${VERDE}▶️  Iniciando testes: Mercado Livre${NC}"
+echo -e "${VERDE}Iniciando testes: Mercado Livre${NC}"
 python3 -m robot --variable ENVIRONMENT:MERCADOLIVRE \
       --outputdir results/mercadolivre \
       --name "Testes Mercado Livre" \
@@ -49,7 +49,7 @@ python3 -m robot --variable ENVIRONMENT:MERCADOLIVRE \
       tests/web/ &
 PID_ML=$!
 
-echo -e "${VERDE}▶️  Iniciando testes: Casas Bahia${NC}"
+echo -e "${VERDE}Iniciando testes: Casas Bahia${NC}"
 python3 -m robot --variable ENVIRONMENT:CASASBAHIA \
       --outputdir results/casasbahia \
       --name "Testes Casas Bahia" \
@@ -57,7 +57,7 @@ python3 -m robot --variable ENVIRONMENT:CASASBAHIA \
       tests/web/ &
 PID_CASASBAHIA=$!
 
-echo -e "\n${AMARELO}⏳ Aguardando conclusão dos testes...${NC}\n"
+echo -e "\n${AMARELO}Aguardando conclusão dos testes...${NC}\n"
 
 # Aguarda todos os processos terminarem
 # O 'wait' espera todos os processos em background finalizarem
@@ -71,19 +71,19 @@ wait $PID_CASASBAHIA
 STATUS_CASASBAHIA=$?
 
 # Exibe resumo dos resultados
-echo -e "\n${AZUL}╔════════════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${AZUL}║                    📊 RESUMO DA EXECUÇÃO                           ║${NC}"
-echo -e "${AZUL}╚════════════════════════════════════════════════════════════════════╝${NC}\n"
+echo -e "\n${AZUL}=====================================================================${NC}"
+echo -e "${AZUL}                    RESUMO DA EXECUÇÃO                           ${NC}"
+echo -e "${AZUL}=====================================================================${NC}\n"
 
-# Função para exibir status bonitinho
+# Função para exibir status
 exibir_status() {
     local ambiente=$1
     local status=$2
     
     if [ $status -eq 0 ]; then
-        echo -e "  ✅ ${VERDE}$ambiente: PASSOU${NC}"
+        echo -e "  ${VERDE}$ambiente: PASSOU${NC}"
     else
-        echo -e "  ❌ ${VERMELHO}$ambiente: FALHOU (código $status)${NC}"
+        echo -e "  ${VERMELHO}$ambiente: FALHOU (código $status)${NC}"
     fi
 }
 
@@ -92,10 +92,10 @@ exibir_status "Mercado Livre " $STATUS_ML
 exibir_status "Casas Bahia   " $STATUS_CASASBAHIA
 
 echo ""
-echo -e "${AZUL}📂 Relatórios salvos em:${NC}"
-echo -e "   📄 results/amazon/report.html"
-echo -e "   📄 results/mercadolivre/report.html"
-echo -e "   📄 results/casasbahia/report.html"
+echo -e "${AZUL}Relatórios salvos em:${NC}"
+echo -e "   results/amazon/report.html"
+echo -e "   results/mercadolivre/report.html"
+echo -e "   results/casasbahia/report.html"
 
 echo ""
 echo -e "${AMARELO}💡 Dica: Abra os arquivos report.html no navegador para ver os resultados detalhados!${NC}"

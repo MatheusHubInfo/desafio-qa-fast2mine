@@ -1,96 +1,88 @@
-# ╔════════════════════════════════════════════════════════════════════╗
-# ║         PIPELINE CI/CD - GitHub Actions                            ║
-# ║         Executa os testes automaticamente a cada push/PR            ║
-# ╚════════════════════════════════════════════════════════════════════╝
+# Pipeline CI/CD - GitHub Actions
+# Executa os testes automaticamente a cada push/PR
 
-name: 🤖 Testes Automatizados
+name: Testes Automatizados
 
-# Quando este pipeline vai rodar?
 on:
   push:
-    branches: [ main, develop ]  # Roda quando fizer push na main ou develop
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]            # Roda quando abrir PR para main
+    branches: [ main ]
   schedule:
-    - cron: '0 2 * * 1-5'         # Roda todo dia útil às 2h da manhã (testes de regressão automáticos!)
-  workflow_dispatch:              # Permite rodar manualmente pelo GitHub
+    - cron: '0 2 * * 1-5'  # Roda todo dia útil às 2h da manhã
+  workflow_dispatch:
 
-# Configurações de concorrência - cancela execuções antigas se houver nova
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # ═══════════════════════════════════════════════════════════════════
   # JOB 1: Testes Web - Amazon
-  # ═══════════════════════════════════════════════════════════════════
   testes-web-amazon:
-    name: 🌐 Testes Web - Amazon
+    name: Testes Web - Amazon
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout do código
+      - name: Checkout do código
         uses: actions/checkout@v4
       
-      - name: 🐍 Configurar Python 3.11
+      - name: Configurar Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'  # Cache das dependências para ser mais rápido
+          cache: 'pip'
       
-      - name: 📦 Instalar dependências
+      - name: Instalar dependências
         run: |
           pip install --upgrade pip
           pip install robotframework
           pip install robotframework-browser
           pip install robotframework-appiumlibrary
       
-      - name: 🎭 Inicializar Playwright (Browser Library)
+      - name: Inicializar Playwright
         run: rfbrowser init
       
-      - name: 🧪 Executar testes no ambiente AMAZON
+      - name: Executar testes no ambiente AMAZON
         run: |
           robot --variable ENVIRONMENT:AMAZON \
                 --outputdir results/amazon \
                 --name "Testes Amazon" \
                 --loglevel INFO \
                 tests/web/
-        continue-on-error: true  # Não para o pipeline se falhar (queremos ver todos os resultados)
+        continue-on-error: true
       
-      - name: 📊 Upload dos resultados (Amazon)
-        if: always()  # Sempre faz upload, mesmo se os testes falharem
+      - name: Upload dos resultados (Amazon)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: resultados-amazon
           path: results/amazon/
           retention-days: 30
 
-  # ═══════════════════════════════════════════════════════════════════
-  # JOB 2: Testes Web - Mercado Livre (roda em paralelo com Amazon!)
-  # ═══════════════════════════════════════════════════════════════════
+  # JOB 2: Testes Web - Mercado Livre
   testes-web-mercadolivre:
-    name: 🌐 Testes Web - Mercado Livre
+    name: Testes Web - Mercado Livre
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout do código
+      - name: Checkout do código
         uses: actions/checkout@v4
       
-      - name: 🐍 Configurar Python 3.11
+      - name: Configurar Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
       
-      - name: 📦 Instalar dependências
+      - name: Instalar dependências
         run: |
           pip install --upgrade pip
           pip install robotframework robotframework-browser robotframework-appiumlibrary
       
-      - name: 🎭 Inicializar Playwright
+      - name: Inicializar Playwright
         run: rfbrowser init
       
-      - name: 🧪 Executar testes no ambiente MERCADOLIVRE
+      - name: Executar testes no ambiente MERCADOLIVRE
         run: |
           robot --variable ENVIRONMENT:MERCADOLIVRE \
                 --outputdir results/mercadolivre \
@@ -99,7 +91,7 @@ jobs:
                 tests/web/
         continue-on-error: true
       
-      - name: 📊 Upload dos resultados (Mercado Livre)
+      - name: Upload dos resultados (Mercado Livre)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -107,92 +99,87 @@ jobs:
           path: results/mercadolivre/
           retention-days: 30
 
-  # ═══════════════════════════════════════════════════════════════════
-  # JOB 3: Testes Web - Samsung (também em paralelo!)
-  # ═══════════════════════════════════════════════════════════════════
-  testes-web-samsung:
-    name: 🌐 Testes Web - Samsung
+  # JOB 3: Testes Web - Casas Bahia
+  testes-web-casasbahia:
+    name: Testes Web - Casas Bahia
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout do código
+      - name: Checkout do código
         uses: actions/checkout@v4
       
-      - name: 🐍 Configurar Python 3.11
+      - name: Configurar Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
       
-      - name: 📦 Instalar dependências
+      - name: Instalar dependências
         run: |
           pip install --upgrade pip
           pip install robotframework robotframework-browser robotframework-appiumlibrary
       
-      - name: 🎭 Inicializar Playwright
+      - name: Inicializar Playwright
         run: rfbrowser init
       
-      - name: 🧪 Executar testes no ambiente SAMSUNG
+      - name: Executar testes no ambiente CASASBAHIA
         run: |
-          robot --variable ENVIRONMENT:SAMSUNG \
-                --outputdir results/samsung \
-                --name "Testes Samsung" \
+          robot --variable ENVIRONMENT:CASASBAHIA \
+                --outputdir results/casasbahia \
+                --name "Testes Casas Bahia" \
                 --loglevel INFO \
                 tests/web/
         continue-on-error: true
       
-      - name: 📊 Upload dos resultados (Samsung)
+      - name: Upload dos resultados (Casas Bahia)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: resultados-samsung
-          path: results/samsung/
+          name: resultados-casasbahia
+          path: results/casasbahia/
           retention-days: 30
 
-  # ═══════════════════════════════════════════════════════════════════
   # JOB 4: Consolidação de Resultados
-  # Este job só roda depois que todos os anteriores terminarem
-  # ═══════════════════════════════════════════════════════════════════
   consolidar-resultados:
-    name: 📋 Consolidar Resultados
-    needs: [testes-web-amazon, testes-web-mercadolivre, testes-web-samsung]
+    name: Consolidar Resultados
+    needs: [testes-web-amazon, testes-web-mercadolivre, testes-web-casasbahia]
     runs-on: ubuntu-latest
-    if: always()  # Roda mesmo se algum teste falhou
+    if: always()
     
     steps:
-      - name: 📥 Download resultados Amazon
+      - name: Download resultados Amazon
         uses: actions/download-artifact@v4
         with:
           name: resultados-amazon
           path: consolidado/amazon
       
-      - name: 📥 Download resultados Mercado Livre
+      - name: Download resultados Mercado Livre
         uses: actions/download-artifact@v4
         with:
           name: resultados-mercadolivre
           path: consolidado/mercadolivre
       
-      - name: 📥 Download resultados Samsung
+      - name: Download resultados Casas Bahia
         uses: actions/download-artifact@v4
         with:
-          name: resultados-samsung
-          path: consolidado/samsung
+          name: resultados-casasbahia
+          path: consolidado/casasbahia
       
-      - name: 📊 Gerar relatório consolidado
+      - name: Gerar relatório consolidado
         run: |
-          echo "## 📊 Resumo da Execução" > resumo.md
+          echo "## Resumo da Execução" > resumo.md
           echo "" >> resumo.md
-          echo "✅ Testes executados em 3 ambientes simultaneamente!" >> resumo.md
+          echo "Testes executados em 3 ambientes simultaneamente" >> resumo.md
           echo "" >> resumo.md
           echo "### Ambientes testados:" >> resumo.md
-          echo "- 🛒 Amazon" >> resumo.md
-          echo "- 🛍️ Mercado Livre" >> resumo.md
-          echo "- 📱 Samsung" >> resumo.md
+          echo "- Amazon" >> resumo.md
+          echo "- Mercado Livre" >> resumo.md
+          echo "- Casas Bahia" >> resumo.md
           echo "" >> resumo.md
-          echo "🔗 Acesse os artefatos acima para ver os relatórios detalhados!" >> resumo.md
+          echo "Acesse os artefatos acima para ver os relatórios detalhados" >> resumo.md
           cat resumo.md
       
-      - name: 💬 Comentar no PR (se houver)
+      - name: Comentar no PR (se houver)
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
@@ -205,15 +192,3 @@ jobs:
               repo: context.repo.repo,
               body: resumo
             });
-
-# ═══════════════════════════════════════════════════════════════════
-# DIFERENCIAIS IMPLEMENTADOS:
-# ═══════════════════════════════════════════════════════════════════
-# ✅ Integração com pipeline CI/CD (GitHub Actions)
-# ✅ Execução automática a cada push/PR
-# ✅ Execução paralela (3 ambientes simultaneamente!)
-# ✅ Geração automática de relatórios
-# ✅ Upload de artefatos para análise posterior
-# ✅ Comentário automático em Pull Requests
-# ✅ Testes de regressão agendados (segunda a sexta, 2h)
-# ═══════════════════════════════════════════════════════════════════

@@ -1,11 +1,11 @@
 # Casos de Teste - Gestão de Equipamentos
 
-## 📋 Informações de Controle
-* **Autor do Teste:** Matheus Alves de Lima
-* **Data de Criação:** 09/06/2026
-* **Ferramenta de Documentação:** Markdown (VS Code)
+## Informações de Controle
+* Autor do Teste: Matheus Alves de Lima
+* Data de Criação: 09/06/2026
+* Ferramenta de Documentação: Markdown (VS Code)
 
-### 🌍 Matriz de Ambientes e Massa de Dados (Multiambiente)
+### Matriz de Ambientes e Massa de Dados (Multiambiente)
 Abaixo estão mapeados os ambientes fictícios fornecidos para a execução destes cenários:
 
 | Ambiente | Tipo/Propósito | URL Base (Fictícia) | Massa de Dados (Válida)    |               |

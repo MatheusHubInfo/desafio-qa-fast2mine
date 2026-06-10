@@ -5,9 +5,9 @@ Resource             config/env_config.resource
 Resource             pages/mobile_equip_page.resource
 
 *** Keywords ***
-# ═══════════════════════════════════════════════════════════════
+#---
 #  SETUP & TEARDOWN
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Iniciar Sessao Mobile
     [Documentation]    Abre app mobile com capabilities configuradas
@@ -28,9 +28,9 @@ Encerrar Sessao Mobile
     Capture Page Screenshot
     Close Application
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  BUSCA
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Dado que o usuário abriu o app na tela de busca
     Wait Until Element Is Visible    ${MOBILE_INPUT_BUSCA}    timeout=10s
@@ -57,9 +57,9 @@ Então o app deve mostrar o aviso de lista vazia
     Wait Until Element Is Visible    ${MOBILE_ALERTA_VAZIO}    timeout=10s
     Element Text Should Be           ${MOBILE_ALERTA_VAZIO}    Não encontrado
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  EDIÇÃO
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Dado que o usuário localizou um equipamento no app
     Wait Until Element Is Visible    ${MOBILE_TXT_NOME_EQUIP}    timeout=10s
@@ -87,9 +87,9 @@ Então o app deve atualizar o nome com sucesso
 E exibir mensagem de confirmação no app
     Wait Until Element Is Visible    ${MOBILE_MSG_SUCESSO}    timeout=10s
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  STATUS
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Dado que existe um equipamento com status "Ativo" no app
     Wait Until Element Is Visible    ${MOBILE_TXT_STATUS_EQUIP}    timeout=10s
@@ -127,9 +127,9 @@ E apresentar o status "Ativo" no app
     Wait Until Element Is Visible    ${MOBILE_TXT_STATUS_EQUIP}    timeout=10s
     Element Text Should Be           ${MOBILE_TXT_STATUS_EQUIP}    Ativo
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  FILTROS
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Dado que o usuário realizou uma busca no app
     Input Text       ${MOBILE_INPUT_BUSCA}    ${EQUIPAMENTO}
@@ -151,9 +151,9 @@ E exibir novamente todos os equipamentos no app
     ${count}=    Get Matching Xpath Count    ${MOBILE_TXT_NOME_EQUIP}
     Should Be True    ${count} > ${0}
 
-# ═══════════════════════════════════════════════════════════════
+#---
 #  VALIDAÇÃO
-# ═══════════════════════════════════════════════════════════════
+#---
 
 Dado que o usuário está editando um equipamento no app
     Wait Until Element Is Visible    ${MOBILE_BTN_EDITAR}         timeout=10s

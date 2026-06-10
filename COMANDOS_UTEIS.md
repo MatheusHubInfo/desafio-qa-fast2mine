@@ -1,6 +1,6 @@
-# 📚 Comandos Úteis - Cola de Referência Rápida
+# Comandos Úteis - Cola de Referência Rápida
 
-## 🚀 Execução Rápida
+## Execução Rápida
 
 ```bash
 # Teste mais rápido - valida que tudo está funcionando
@@ -17,7 +17,7 @@ robot -v ENVIRONMENT:SAMSUNG tests/web/        # Samsung
 
 ---
 
-## 🎯 Filtros e Seleção de Testes
+## Filtros e Seleção de Testes
 
 ```bash
 # Rodar apenas um teste específico
@@ -38,7 +38,7 @@ robot -i alta -i positivo tests/web/    # Alta E positivo
 
 ---
 
-## 📊 Opções de Relatório
+## Opções de Relatório
 
 ```bash
 # Personalizar saída dos relatórios
@@ -59,7 +59,7 @@ robot --console quiet tests/web/
 
 ---
 
-## 🐛 Debug e Troubleshooting
+## Debug e Troubleshooting
 
 ```bash
 # Modo debug - mostra TUDO que está acontecendo
@@ -83,7 +83,7 @@ robot --variable ENVIRONMENT:AMAZON \
 
 ---
 
-## 🔄 Reexecutar Apenas Falhas
+## Reexecutar Apenas Falhas
 
 ```bash
 # Primeira execução

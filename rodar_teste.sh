@@ -9,7 +9,7 @@ nvm use 20 > /dev/null 2>&1
 # Define ambiente (padrão: AMAZON)
 AMBIENTE="${1:-AMAZON}"
 
-echo "🚀 Executando testes no ambiente: $AMBIENTE"
+echo "Executando testes no ambiente: $AMBIENTE"
 echo "----------------------------------------"
 
 # Remove resultados anteriores
@@ -25,12 +25,12 @@ python3 -m robot \
 # Mostra status
 if [ $? -eq 0 ]; then
     echo ""
-    echo "✅ Testes PASSARAM!"
-    echo "📊 Relatório: results/teste_${AMBIENTE,,}/report.html"
+    echo "Testes PASSARAM!"
+    echo "Relatório: results/teste_${AMBIENTE,,}/report.html"
 else
     echo ""
-    echo "❌ Testes FALHARAM"
-    echo "📊 Veja detalhes em: results/teste_${AMBIENTE,,}/log.html"
+    echo "Testes FALHARAM"
+    echo "Veja detalhes em: results/teste_${AMBIENTE,,}/log.html"
 fi
 
 # Abre relatório
